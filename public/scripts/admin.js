@@ -1,10 +1,10 @@
 $(function() {
 
+	//delete confirmation
 	$(document).on('click', '.delete', function () {
 		var del = confirm("Вы действительно хотите удалить запись?")
 		
 		if (del) {
-
 			var id = $(this).attr("id")
 			console.log(id)
 			$.ajax({
@@ -18,6 +18,38 @@ $(function() {
 		}
 	})
 
+	$(document).on('click', '.edit', function () {	
+		$("#Textarea1").val("")
+		$("#createform").fadeIn();	
+		var id = $(this).attr("id")
+		$.ajax({
+	      		type: "POST",
+	      		url: "/getnote",
+	      		data: {id:id},
+	      		success: function(msg) {
+	      			 $("#Textarea1").val(msg.rows[0].text)
+	      			 
+	      			 $("#Textarea1").addClass(id)
+	      			 if (msg.aud!=null) {
+	      			 	$(".all").prop('checked', false)
+						$("#all").prop('checked', false)
+
+						$all = $(".all");
+						
+						for (var i=0; i<msg.aud.length; i++) {
+							$('[value='+msg.aud[i].group_id+']').prop('checked', true)
+						}
+	      			 }
+	      			 else {
+	      			 	$(".all").prop('checked', true)
+						$("#all").prop('checked', true)
+	      			 }
+
+	      		}
+	      	})
+		
+	})
+
 
 
 	$("#create").click(function(){
@@ -27,8 +59,14 @@ $(function() {
 		$("#all").prop('checked', true)	
 	})
 
+	$("#cancel").click(function(){
+		$("#createform").fadeOut();
+	})
+
 	$("#subm").click(function(){
 		$("#createform").fadeOut();	
+
+		var classes = $("#Textarea1").attr('class').split(/\s+/)
 
 		var ch = []
 			$all = $(".all");
@@ -38,19 +76,32 @@ $(function() {
 					if ($($all[i]).prop('checked'))
 						ch.push($($all[i]).val())
 			}
-		
+
 		if ($("#Textarea1").val()!="" && ch[0])
-		$.ajax({
-	      type: "POST",
-	      url: "/submitmess",
-	      data: {f:ch, text: $("#Textarea1").val()},
-	      success: function(msg) {
-	      	console.log(msg)
-	      	var notes = $("#container").html();
-	      	notes = "<div class='not'><p class='delete' id='"+msg.id+"'>Удалить</p><p class='mess'>"+msg.message+"</p><p class='auth'>"+msg.auth+"</p><p class='time'>"+msg.time+"</p></div>" + notes
-	      	$("#container").html(notes)
-	      }
-    });
+		if (classes.length==2) {
+			$.ajax({
+		      type: "POST",
+		      url: "/editsubmitmess",
+		      data: {f:ch, text: $("#Textarea1").val(), id:parseInt(classes[1])},
+		      success: function(msg) {
+		      	}
+    		});
+		}
+		else {
+			$.ajax({
+		      type: "POST",
+		      url: "/submitmess",
+		      data: {f:ch, text: $("#Textarea1").val()},
+		      success: function(msg) {
+		      	console.log(msg)
+		      	var notes = $("#container").html();
+		      	notes = "<div class='not'><p class='delete' id='"+msg.id_c+"'>Удалить</p><p class='edit' id='"+msg.id+"'>Редактировать</p><p class='mess'>"+msg.message+"</p><p class='auth'>"+msg.auth+"</p><p class='time'>"+msg.time+"</p></div>" + notes
+		      	$("#container").html(notes)
+		      	}
+    		});
+		}
+		
+		
 
 	})
 

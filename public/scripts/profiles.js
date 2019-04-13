@@ -16,32 +16,60 @@ var format = function(day) {
 module.exports = function(app){
 
     app.post("/submitmess",(req,res)=>{         
-        var id_c;
+        
         connection.query("SELECT id, surname, name, lastname FROM users where username='"+req.session.passport.user+"'", function(err, rows, fields) {
          var aud = req.body['f[]'];
          var text = req.body.text;
-         
+         var id_c;
+         data = rows;
           d = new Date()
           var date = d.getFullYear()+"-"+format(d.getMonth()+1)+"-"+format(d.getDate())+" "+format(d.getHours())+":"+format(d.getMinutes())
           if (aud=="all") {
             connection.query("INSERT into notices (user_id, text, time, audit) values ("+rows[0].id+", '"+
-              text+"' , '"+date+"', 'all')", function(err, rows, fields) {id_c = rows.insertId; })
-          }
+              text+"' , '"+date+"', 'all')", function(err, rows, fields) {id_c = rows.insertId; 
+               res.send({"id_c":id_c, "auth":data[0].surname+ " "+data[0].name+ " "+data[0].lastname, "time":date, "message":text})  
+              })
+            }
+
           else {
              connection.query("INSERT into notices (user_id, text, time, audit) values ("+rows[0].id+", '"+
-              text+"' , '"+date+"', null)", function(err, rows, fields) {
+              text+"' , '"+date+"', null)", function(err, rows, fields) { 
                 id_c = rows.insertId;
                   for (var i=0; i< aud.length; i++) {
                     connection.query("INSERT into not_aud (not_id, group_id) values ("+rows.insertId+","+aud[i]+")",
                      function(err, rows, fields) {})
                  }
+                 res.send({"id_c":id_c, "auth":data[0].surname+ " "+data[0].name+ " "+data[0].lastname, "time":date, "message":text}) 
+              })
+          }
+          
+           
+        }); 
+    });
+
+    app.post("/editsubmitmess",(req,res)=>{         
+        var id = req.body.id;
+        var aud = req.body['f[]'];
+        var text = req.body.text;
+
+        console.log(id)
+
+        connection.query("delete from not_aud where not_id="+id, function(err, rows, fields) {
+          if (aud=="all") {
+            connection.query("update notices set text='"+text+"', audit='all' where id="+id, function(err, rows, fields) {})
+          }
+          else {
+             connection.query("update notices set text='"+text+"', audit='null' where id="+id, function(err, rows, fields) {
+                  for (var i=0; i< aud.length; i++) {
+                    connection.query("INSERT into not_aud (not_id, group_id) values ("+id+","+aud[i]+")",
+                     function(err, rows, fields) {})
+                 }
 
               })
-             // 
+             
           }
-                    
-           res.send({"id_c":id_c, "auth":rows[0].surname+ " "+rows[0].name+ " "+rows[0].lastname, "time":date, "message":text}) 
-        }); 
+            res.send("")
+        })
     });
 
 app.get('/marks', (req, res) => {  
@@ -166,6 +194,21 @@ app.post('/deletenote', (req, res) => {
       res.send("")
   })
 });  
+
+app.post('/getnote', (req, res) => { 
+
+  id = req.body.id;
+  connection.query("select * from notices where id="+id, function(err, rows, fields) {
+      if (rows[0].audit!="all") {
+        var data = rows;
+          connection.query("select group_id from not_aud where not_id="+id, function(err, rows, fields) {
+            res.send({"rows":data, "aud":rows})
+          })
+        }
+      else res.send({"rows":rows, "aud":null})
+      })
+     
+  });
     
         
 

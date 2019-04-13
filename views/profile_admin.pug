@@ -35,8 +35,9 @@ body
     div(id="container")
      - var g = not
       each item in g
-        div(class="not")
+        div(class="not" id=item.id)
           p(class="delete" id=item.id) Удалить
+          p(class="edit" id=item.id) Редактировать
           p(class="mess")=item.text
           p(class="auth")=item.surname+" "+item.name+" "+item.lastname
           p(class="time")=item.time
@@ -57,4 +58,5 @@ body
         label(for="Textarea1") Введите текст объявления
         textarea(class="form-control" id="Textarea1")
         button(type="submit" id="subm" class="btn btn-primary")  Добавить
+        button(type="submit" id="cancel" class="btn btn-primary")  Отмена
      

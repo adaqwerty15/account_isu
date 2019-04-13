@@ -1,0 +1,59 @@
+extends layout
+block title
+    title Направления
+    block scripts
+        style
+            include ../public/style/directions.css
+            include ../public/style/tooltip.css
+
+        script
+            include ../public/scripts/add.js
+            include ../public/scripts/tooltip.js
+
+block content 
+    
+    div(class="nav")
+      ul(id="add")
+        li Добавить
+      ul(id="del" data-tooltip="Для удаления выберите строку")
+        li Удалить
+    table(class="table")
+            thead
+                tr
+                    th №
+                    th Код
+                    th Направление
+            tbody
+                -for(var i=0;i<resultQuery.length;i++){
+                    tr(class="info")
+                        th(id="id")=resultQuery[i].id
+                        th(id="cod")=resultQuery[i].code
+                        th(id="dir")=resultQuery[i].direction
+                -}
+
+    div(class="add")
+        div( class="addForm") 
+            p Направление
+            div(class="form-group")
+                label Код:
+                input(type="text" class="form-control" id="code" placeholder="Введите код" )
+            div(class="form-group")
+                label Наименование направления:
+                input(type="text" class="form-control" id="name" placeholder="Введите наименование" )
+            div(class="button")    
+                button(class="btn btn-primary" class="addButton") Добавить
+                button(class="btn btn-primary" class="cancel") Отмена
+
+
+    div(class="update")
+        div( class="addForm") 
+            p Направление
+            div(class="form-group")
+                label Код:
+                input(type="text" class="form-control" id="oldCode" placeholder="Введите код" )
+            div(class="form-group")
+                label Наименование направления:
+                input(type="text" class="form-control" id="oldName" placeholder="Введите наименование" )
+            div(class="button")    
+                button(class="btn btn-primary" class="saveButton") Сохранить
+                button(class="btn btn-primary" class="cancelChange") Отмена

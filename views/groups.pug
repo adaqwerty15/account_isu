@@ -1,0 +1,65 @@
+extends layout
+block title
+    title Группы
+    block scripts
+        style
+            include ../public/style/users.css
+            include ../public/style/groups.css
+        script
+            include ../public/scripts/users.js
+            include ../public/scripts/groups.js
+
+block content 
+    div(class="nav")
+      ul(id="add")
+        li Добавить
+      ul(id="del" data-tooltip="Для удаления выберите строку")
+        li Удалить
+    table(class="table")
+            thead
+                tr
+                    th №
+                    th Год
+                    th Группа
+                    th Направление
+            tbody
+                -for(var i=0;i<resultQuery.length;i++){
+                    tr(class="info")
+                        th(id="id")=resultQuery[i].id
+                        th(id="cod")=resultQuery[i].year
+                        th(id="name")=resultQuery[i].name
+                        th(id="dir")=resultQuery[i].direction
+                -}
+
+
+    div(class="add")
+        div( class="addForm") 
+            p Группа
+            div(class="form-group")
+                label Год:
+                input(type="text" class="form-control" id="code" placeholder="Введите год" )
+            div(class="form-group")
+                label Название:
+                input(type="text" class="form-control" id="iname" placeholder="Введите название" )
+            div(class="form-group")
+                label(for="sel1") Направление:
+                select(class="form-control" id="sel1")          
+            div(class="button")    
+                button(class="btn btn-primary" class="addButton") Добавить
+                button(class="btn btn-primary" class="cancel") Отмена
+
+    div(class="update")
+        div( class="addForm") 
+            p Группа
+            div(class="form-group")
+                label Год:
+                input(type="text" class="form-control" id="oldCode" placeholder="Введите год" )
+            div(class="form-group")
+                label Название:
+                input(type="text" class="form-control" id="oldName" placeholder="Введите название" )
+            div(class="form-group" )
+                label(for="sel1") Направление:
+                select(class="form-control" id="oldDir")       
+            div(class="button")    
+                button(class="btn btn-primary" class="saveButton") Сохранить
+                button(class="btn btn-primary" class="cancelChange") Отмена

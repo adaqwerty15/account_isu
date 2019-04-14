@@ -28,7 +28,7 @@ $(function() {
 	      		data: {id:id},
 	      		success: function(msg) {
 	      			 $("#Textarea1").val(msg.rows[0].text)
-	      			 
+	      			 console.log(id)
 	      			 $("#Textarea1").addClass(id)
 	      			 if (msg.aud!=null) {
 	      			 	$(".all").prop('checked', false)
@@ -67,6 +67,7 @@ $(function() {
 		$("#createform").fadeOut();	
 
 		var classes = $("#Textarea1").attr('class').split(/\s+/)
+		console.log(classes)
 
 		var ch = []
 			$all = $(".all");
@@ -79,6 +80,8 @@ $(function() {
 
 		if ($("#Textarea1").val()!="" && ch[0])
 		if (classes.length==2) {
+			$(".not#"+parseInt(classes[1])+" > .mess").html($("#Textarea1").val())
+			$("#Textarea1").removeClass(parseInt(classes[1]))
 			$.ajax({
 		      type: "POST",
 		      url: "/editsubmitmess",
@@ -93,9 +96,8 @@ $(function() {
 		      url: "/submitmess",
 		      data: {f:ch, text: $("#Textarea1").val()},
 		      success: function(msg) {
-		      	console.log(msg)
 		      	var notes = $("#container").html();
-		      	notes = "<div class='not'><p class='delete' id='"+msg.id_c+"'>Удалить</p><p class='edit' id='"+msg.id+"'>Редактировать</p><p class='mess'>"+msg.message+"</p><p class='auth'>"+msg.auth+"</p><p class='time'>"+msg.time+"</p></div>" + notes
+		      	notes = "<div class='not' id='"+msg.id_c+"'><p class='delete' id='"+msg.id_c+"'>Удалить</p><p class='edit' id='"+msg.id_c+"'>Редактировать</p><p class='mess'>"+msg.message+"</p><p class='auth'>"+msg.auth+"</p><p class='time'>"+msg.time+"</p></div>" + notes
 		      	$("#container").html(notes)
 		      	}
     		});

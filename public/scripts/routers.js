@@ -50,8 +50,9 @@ module.exports = function(app,passport){
                         var gr = rows;
                         connection.query("SELECT id FROM users where username='"+req.user.username+"'", function(err, rows, fields) {
                             if (rows[0]) var id = rows[0].id;
-                            connection.query("select t1.id, t2.surname, t2.name, t2.lastname, t1.text, t1.time  from notices as t1, users as t2 where t2.id=t1.user_id  and t1.user_id = "+id+" order by time desc", function(err, rows, fields) {
+                            connection.query("(select t2.username, t1.id, t2.surname, t2.name, t2.lastname, t1.text, t1.time  from notices as t1, users as t2 where t2.id=t1.user_id  and t1.user_id = "+id+") UNION (SELECT t2.username, t1.id, t2.surname, t2.name, t2.lastname, t1.text, t1.time  from notices as t1, users as t2 where t2.id=t1.user_id and t2.role='admin') order by time desc", function(err, rows, fields) {
                             n = rows;
+                            console.log(rows)
                             res.render('profile_teacher', {groups: gr, not:n, user:req.user.username});
                             })
                         });

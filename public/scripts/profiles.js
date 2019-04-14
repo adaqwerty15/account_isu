@@ -52,8 +52,6 @@ module.exports = function(app){
         var aud = req.body['f[]'];
         var text = req.body.text;
 
-        console.log(id)
-
         connection.query("delete from not_aud where not_id="+id, function(err, rows, fields) {
           if (aud=="all") {
             connection.query("update notices set text='"+text+"', audit='all' where id="+id, function(err, rows, fields) {})

@@ -25,14 +25,7 @@ module.exports = function(app, passport){
         done(null, user.username);
       });
       
-    passport.deserializeUser(function(username, done) {
-             // if (user.username == username) {  
-             //     return done(null,{
-             //         "username": user.username,
-             //         "password":user.password,
-             //         "role":user.role
-             //     });
-             // }   
+    passport.deserializeUser(function(username, done) { 
         var user ={}
         connection.query("SELECT username,password,role FROM users where username='"+username+"'",function(err, rows, fields) {
             

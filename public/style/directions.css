@@ -1,3 +1,30 @@
+.block__line{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 2%;
+}
+tbody th{
+    font-weight: normal;
+}
+.block__line-add:before{
+     background-image : url(../images/add.png);
+}
+.block__line-del:before{
+    background-image : url(../images/del.png);
+}
+.block__line-update:before{
+    background-image : url(../images/update.png);
+}
+.block__line-add{
+    margin-right: 1%;
+}
+.block__line-del{
+    margin-right: 1%;
+}
+.block__line-update{
+    margin-right: 1%;
+}
 table{
     width: 75%;
 
@@ -5,71 +32,7 @@ table{
 tbody th{
     font-weight: normal;
 }
-
-.add{
-  justify-content: stretch;
-  display: none;
-}
-.update{
-    justify-content: stretch;
-    display: none;
-}
-.addButton,.cancel{
-    justify-self: center;
-    width: 80%;
-}
-.cancelChange,.saveButton{
-    justify-self: center;
-    width: 80%;
-}
-
-.nav{
-    display: grid;
-    justify-items: start;
-    grid-template-columns: auto auto;
-    justify-content: center;
-    
-}
-#add li{
-    list-style-image: url(../images/add.png);
-}
-#del li{
-    list-style-image: url(../images/del.png);
-}
-li:hover{
-    text-decoration:underline;
-    opacity: 0.8;
-    cursor: pointer;
-}
-
-.addForm{
-    width: 50%;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    padding-left: 3%;
-    padding-right: 3%;
-    margin-left: auto;
-    margin-right: auto;
-    border: 3px #007bff solid;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    position: absolute;
-    z-index: 2;
-    top: 25%;
-    left: 25%;
-
-    background-color: white;
-}
-p{
-  text-align: center;
-   font-weight: 500;
-   font-size: large;
-}
-.button{
-    margin-top: 5%;
-    grid-template-columns:auto auto;
-    display: grid;
-}
 .info{
-    background-color: #fff;
+    background-color: white;
     cursor: pointer;
 }

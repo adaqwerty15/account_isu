@@ -70,17 +70,17 @@ module.exports = function(app){
         })
     });
 
-app.get('/marks', (req, res) => {  
-  connection.query("SELECT * FROM groups order by year desc", function(err, rows, fields) {
-      res.render('marks', {groups: rows, user:req.user.username})
-  })
-});
+// app.get('/marks', (req, res) => {  
+//   connection.query("SELECT * FROM groups order by year desc", function(err, rows, fields) {
+//       res.render('marks', {groups: rows, user:req.user.username})
+//   })
+// });
 
-app.get('/marks/teacher', (req, res) => {  
-  connection.query("SELECT * FROM groups order by year desc", function(err, rows, fields) {
-      res.render('marks_teacher', {groups: rows, user:req.user.username})
-  })
-});
+// app.get('/marks/teacher', (req, res) => {  
+//   connection.query("SELECT * FROM groups order by year desc", function(err, rows, fields) {
+//       res.render('marks_teacher', {groups: rows, user:req.user.username})
+//   })
+// });
 
 app.post('/marks/dis', (req, res) => { 
    group = req.body.group; 
@@ -133,17 +133,17 @@ app.post('/marks/update', (req, res) => {
   
 });
 
-app.get('/schedule', (req, res) => {  
-  res.render("schedule", {user:req.user.username});
-}); 
+// app.get('/schedule', (req, res) => {  
+//   res.render("schedule", {user:req.user.username});
+// }); 
 
-app.get('/schedule/teacher', (req, res) => {  
-  res.render("schedule_teacher", {user:req.user.username});
-});
+// app.get('/schedule/teacher', (req, res) => {  
+//   res.render("schedule_teacher", {user:req.user.username});
+// });
 
-app.get('/subjects', (req, res) => {  
-  res.render("subjects", {user:req.user.username});
-}); 
+// app.get('/subjects', (req, res) => {  
+//   res.render("subjects", {user:req.user.username});
+// }); 
 
 app.get('/subjects/sem', (req, res) => { 
   

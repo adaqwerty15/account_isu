@@ -135,6 +135,7 @@
 	margin-bottom: 0;
 	cursor: pointer;
 	float: right;
+	margin-left: 10px;
 }
 
 .edit {
@@ -152,4 +153,7 @@
 }
 .curs {
 	font-style: italic;
+}
+#cancel{
+	margin-left: 10px;
 }

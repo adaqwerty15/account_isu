@@ -133,13 +133,13 @@ app.post('/marks/update', (req, res) => {
   
 });
 
-// app.get('/schedule', (req, res) => {  
-//   res.render("schedule", {user:req.user.username});
-// }); 
+app.get('/schedule', (req, res) => {  
+  res.render("schedule", {user:req.user.username});
+}); 
 
-// app.get('/schedule/teacher', (req, res) => {  
-//   res.render("schedule_teacher", {user:req.user.username});
-// });
+app.get('/schedule/teacher', (req, res) => {  
+  res.render("schedule_teacher", {user:req.user.username});
+});
 
 // app.get('/subjects', (req, res) => {  
 //   res.render("subjects", {user:req.user.username});

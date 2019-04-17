@@ -12,32 +12,36 @@ block content
 	div(class="nav")
 		div(class="nav__left")
 			a(href="/profile" class="btn nav-home" ) Главная
-			a(href="/marks" class="btn nav-up") Предметы и оценки    
-			a(href="/schedule_student" class="btn nav-shedule")  Расписание
-			a(href="/msg" class="btn nav-primary")  Сообщения
+			a(href="/users" class="btn nav-users")  Пользователи
+			a(href="/directions" class="btn nav-dirs") Направления
+			a(href="/groups" class="btn nav-groups")  Группы
+			a(href="/up" class="btn nav-up") Учебный план
+			a(href="/marks" class="btn nav-schedule")  Оценки    
+			a(href="/schedule" class="btn nav-schedule")  Расписание
 		div(class="nav__right")
 			div(class="nav__right-user") Пользователь: #{username}
 			a(href="/login" )
 				button(type="button" class="btn btn-light btn-image nav__right-exit" id="exit")  Выход
-
-	div(class="block")
-		h2 Здесь Вы можете просмотреть и выставить итоговые оценки по предметам 
+			
+	div(class="container")
+		div(class="block")
+			h2 Здесь Вы можете просмотреть и выставить итоговые оценки по предметам 
 		
-		div(class="row")
-			div(class="col")
-				select(name='group' id='group_change' class="form-control")
-					option(disabled selected) Выберите группу
-					- var c = groups
-					each item in c
-						option(value=item.id)=item.name
-			div(class="col")
-				select(name='dis' id='sem_change' class="form-control")
-					option(disabled selected) Выберите семестр
-			div(class="col")
-				select(name='dis' id='dis_change' class="form-control")
-					option(disabled selected) Выберите дисциплину
+			div(class="row")
+				div(class="col")
+					select(name='group' id='group_change' class="form-control")
+						option(disabled selected) Выберите группу
+						- var c = groups
+						each item in c
+							option(value=item.id)=item.name
+				div(class="col")
+					select(name='dis' id='sem_change' class="form-control")
+						option(disabled selected) Выберите семестр
+				div(class="col")
+					select(name='dis' id='dis_change' class="form-control")
+						option(disabled selected) Выберите дисциплину
 
 		
-		div(id="table")
-		button(type='button' id='submarks' class="btn button-ok btn-primary") Ок
+			div(id="table")
+			button(type='button' id='submarks' class="btn button-ok btn-primary") Ок
 			

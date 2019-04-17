@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+$("#submarks").hide();
+
 
 $("#group_change").change(function() {
 	$("#table").html("");

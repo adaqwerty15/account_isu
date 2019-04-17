@@ -88,7 +88,7 @@ $( document ).ready(function() {
             var conf = confirm(str + "Вы действительно хотите удалить запись?");
 
             if (conf) {
-			    $.ajax({
+                $.ajax({
                     type:"POST",
                     url:'/deleteDirection',
                     contentType: 'application/json',

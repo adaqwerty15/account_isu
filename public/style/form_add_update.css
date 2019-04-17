@@ -32,14 +32,14 @@ p{
 }
 .block__input  button:hover{
     background-color: white;
-	color: #384683;
-	border-color: #384683;
+    color: #384683;
+    border-color: #384683;
     box-shadow: none !important;
 }
 .block__input button:active{
     background-color: white !important;
-	color: #384683 !important;
-	border-color: #384683;
+    color: #384683 !important;
+    border-color: #384683;
     box-shadow: none !important;
 }
 .block__input button:focus{

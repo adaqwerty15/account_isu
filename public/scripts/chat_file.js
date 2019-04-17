@@ -104,33 +104,24 @@ app.get('/msg', (req, res) => {
 	});	
 });
 
-app.get('/up', (req, res) => {	
-	connection.query("SELECT * FROM directions order by code", function(err, rows, fields) {
-		dirs = rows;
-	});	
-	connection.query("SELECT year FROM dis group by year", function(err, rows, fields) {
-		res.render('up', {dirs: dirs, masy:rows, user:req.user.username});
-	});	
-	
-});
 
 app.get('/up/teacher', (req, res) => {  
-  connection.query("SELECT * FROM directions order by code", function(err, rows, fields) {
-    dirs = rows;
-  }); 
-  connection.query("SELECT year FROM dis group by year", function(err, rows, fields) {
-    res.render('up_teacher', {dirs: dirs, masy:rows, user:req.user.username});
-  }); 
-  
-});
+                   
+        });
+
+
 
 app.post('/up/show', (req, res) => {	
-	result = dirs.filter(item => (item.code+" "+item.direction)==(req.body.dir));	
-	if (result!=undefined)
-		id = result[0].id;
-	connection.query("SELECT * FROM dis WHERE dir_id="+id+" AND year="+req.body.year+" ORDER BY sem", function(err, rows, fields) {
-		res.send(rows)
-	});	
+  connection.query("SELECT * FROM directions order by code", function(err, rows, fields) {
+            dirs = rows;
+            result = dirs.filter(item => (item.code+" "+item.direction)==(req.body.dir)); 
+            console.log(result)
+            if (result!=undefined)
+              id = result[0].id;
+            connection.query("SELECT * FROM dis WHERE dir_id="+id+" AND year="+req.body.year+" ORDER BY sem", function(err, rows, fields) {
+              res.send(rows)
+            });
+      });  
 });
 
 

@@ -6,14 +6,14 @@
 }
 .button-ok:hover{
     background-color: white;
-	color: #384683;
-	border-color: #384683;
+    color: #384683;
+    border-color: #384683;
     box-shadow: none !important;
 }
 .button-ok:active{
     background-color: white !important;
-	color: #384683 !important;
-	border-color: #384683;
+    color: #384683 !important;
+    border-color: #384683;
     box-shadow: none !important;
 }
 .button-ok:focus{

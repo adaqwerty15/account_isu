@@ -116,7 +116,7 @@ module.exports = function(app,passport){
             });        
         })
         
-        app.post('/changeDirection',(req,res)=>{   
+       app.post('/changeDirection',(req,res)=>{   
             var code = req.body.code;
             var name = req.body.name;
             var id = req.body.id;
@@ -124,20 +124,33 @@ module.exports = function(app,passport){
                 if(err){
                     return err;
                 }
-                res.send(true);
-                res.end();
+                connection.query("SELECT id,code,direction FROM directions",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
             });        
         })
-        app.post('/deleteDirection',(req,res)=>{   
-            var id = req.body.id;
-            connection.query("DELETE FROM `directions` where id="+id,(err,rows,fields)=>{
+
+        app.post('/deleteDirection',(req,res)=>
+        {   
+            var query = '';
+            for(let i = 0; i<req.body.length; i++){
+                if(i != req.body.length-1)
+                    query += req.body[i].id+', ';
+                else
+                    query += req.body[i].id;
+            }
+            connection.query("DELETE FROM `directions` where id IN ("+query+")",(err,rows,fields)=>{
                 if(err){
                     return err;
                 }
-                res.send(true);
-                res.end();
-            });        
+                connection.query("SELECT id,code,direction FROM directions",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
+            });     
         })
+
         app.get('/getAllDir',(req,res)=>{   
             connection.query("SELECT `direction`,`id` FROM `directions`",(err,rows,fields)=>{
                 if(err){
@@ -164,36 +177,48 @@ module.exports = function(app,passport){
                 if(err){
                     return err;
                 }
-                res.send(true);
-                res.end();
+                connection.query("SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
             });        
         })
+
         app.post('/changeGroup',(req,res)=>{ 
           
             var id = req.body.id;
             var year = req.body.year;
             var name = req.body.name;  
-            var idDir = req.body.idDir;
-            console.log(year)
-            console.log(name)
+            var idDir = req.body.dir;
+            console.log(id + "  " +idDir);
             connection.query("UPDATE groups SET `dir_id`="+idDir+",`year`="+year+",`name`='"+name+"' WHERE `id`="+id,(err,rows,fields)=>{
                 if(err){
                     return err;
                 }
-                res.send(true);
-                res.end();
+                connection.query("SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
             });        
         })
+
         app.post('/deleteGroup',(req,res)=>{ 
-            var id = req.body.id;
-            var year = req.body.year;
-            var name = req.body.name;  
-            connection.query("DELETE FROM `groups` WHERE `id`="+id,(err,rows,fields)=>{
+            var query = '';
+            console.log(req.body)
+            for(let i = 0; i<req.body.length; i++){
+                if(i != req.body.length-1)
+                    query += req.body[i].id+', ';
+                else
+                    query += req.body[i].id;
+            }
+            connection.query("DELETE FROM `groups` WHERE id IN ("+query+")",(err,rows,fields)=>{
                 if(err){
                     return err;
                 }
-                res.send(true);
-                res.end();
+                connection.query("SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
             });      
         })
 
@@ -203,6 +228,7 @@ module.exports = function(app,passport){
           })
         });
 
+        
         app.get('/marks/teacher', (req, res) => {  
           connection.query("SELECT * FROM groups order by year desc", function(err, rows, fields) {
               res.render('marks_teacher', {groups: rows, user:req.user.username, username:str})
@@ -217,8 +243,33 @@ module.exports = function(app,passport){
           res.render("schedule_teacher", {user:req.user.username, username:str});
         });
 
+        app.get('/schedule/student', (req, res) => {  
+          res.render("schedule_student", {user:req.user.username, username:str});
+        });
+
         app.get('/subjects', (req, res) => {  
           res.render("subjects", {user:req.user.username, username:str});
         }); 
+
+
+        app.get('/up', (req, res) => {  
+            connection.query("SELECT * FROM directions order by code", function(err, rows, fields) {
+                dirs = rows;
+            }); 
+            connection.query("SELECT year FROM dis group by year", function(err, rows, fields) {
+                res.render('up', {dirs: dirs, masy:rows, user:req.user.username, username:str});
+            }); 
+            
+        });
+
+        app.get('/up/teacher', (req, res) => {  
+          connection.query("SELECT * FROM directions order by code", function(err, rows, fields) {
+            dirs = rows;
+          }); 
+          connection.query("SELECT year FROM dis group by year", function(err, rows, fields) {
+            res.render('up_teacher', {dirs: dirs, masy:rows, user:req.user.username, username:str});
+          }); 
+          
+        });
 
 }

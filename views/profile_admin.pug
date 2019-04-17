@@ -21,20 +21,21 @@ block content
           a(href="/login" )
             button(type="button" class="btn btn-light btn-image nav__right-exit" id="exit")  Выход
   
-  div(class="block")
-    div(class="block__message")
-      h4(class="block__message-title") Объявления
-      button(type="button" class="btn block__message-create" id="create")  Создать объявление
-    div(class="clear")
-    div(id="container")
-      -var g = not
-      each item in g
-         div(class="not" id=item.id)
-          p(class="delete" id=item.id) Удалить
-          p(class="edit" id=item.id) Редактировать
-          p(class="mess")=item.text
-          p(class="auth")=item.surname+" "+item.name+" "+item.lastname
-          p(class="time")=item.time
+  div(class="container")
+    div(class="block")
+      div(class="block__message")
+        h4(class="block__message-title") Объявления
+        button(type="button" class="btn block__message-create" id="create")  Создать объявление
+      div(class="clear")
+      div(id="container")
+        -var g = not
+        each item in g
+          div(class="not" id=item.id)
+            p(class="delete" id=item.id) Удалить
+            p(class="edit" id=item.id) Редактировать
+            p(class="mess")=item.text
+            p(class="auth")=item.surname+" "+item.name+" "+item.lastname
+            p(class="time")=item.time
           
     div(id="createform")
       form

@@ -13,7 +13,8 @@ block content
           a(href="/users" class="btn nav-users")  Пользователи
           a(href="/directions" class="btn nav-dirs") Направления
           a(href="/groups" class="btn nav-groups")  Группы
-          a(href="/up" class="btn nav-up") Учебный план    
+          a(href="/up" class="btn nav-up") Учебный план
+          a(href="/marks" class="btn nav-schedule")  Оценки    
           a(href="/schedule" class="btn nav-shedule")  Расписание
         div(class="nav__right")
           div(class="nav__right-user") Пользователь: #{username}
@@ -25,7 +26,8 @@ block content
             button(class="btn btn-light btn-image block__line-update") Изменить
             button(class="btn btn-light btn-image block__line-del") Удалить
 
-    table(class="table")
+    div(class="container")
+        table(class="table")
             thead
                 tr
                     th №

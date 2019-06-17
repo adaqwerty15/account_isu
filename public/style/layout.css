@@ -62,3 +62,42 @@ body{
 .nav__left a:focus{
     box-shadow: none !important;
 }
+
+
+
+input[type="file"]{
+    display: none;
+}
+.btn-sm{
+    border: #ced4da 1px solid;
+    border-radius: .25rem; 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.btn-sm:hover {
+    opacity: .8;
+}
+.js-labelFile{
+    margin: 0%;
+    padding-top:  4px;
+    padding-bottom: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    border-right: #ced4da 1px solid;
+    border-radius: 0% ;
+
+}
+i{
+    padding-left: 1px;
+    padding-right: 1px;
+    margin-right: 1px;
+}
+.btn-sm{
+    padding: 0%;
+}
+.btn-sm > div{
+    margin-left: 15px;
+}

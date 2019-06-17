@@ -1,6 +1,18 @@
 $(document).ready(function(){
 
-$("#fup").submit(function() {
+	$('#file').on("change",(e)=>{
+		var fileName = '';
+		//fileName = e.target.files[0].name;
+		//$('#namefile').html(fileName);
+		if (e.target.value){
+			fileName = e.target.value.split('\\').pop();
+			fileName ? $('#namefile').html(fileName) : $('#namefile').html("");
+			$('.material-icons').html("cloud_done");
+		} 
+   		
+	});
+
+$("#sup").submit(function() {
 	
 	$(this).ajaxSubmit({
 
@@ -64,6 +76,10 @@ var ch = function() {
 		}
 		});
 }
+
+$('.d option').hover(function(){
+	$($(this)).addClass('selectOption');
+},function(){});
 });
 
 

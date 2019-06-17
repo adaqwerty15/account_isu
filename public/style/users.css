@@ -29,3 +29,55 @@ tbody th{
 .block__line-update{
     margin-right: 1%;
 }
+/* .item_stut input{
+    display: none;
+} */
+
+:root {
+    --checkbox-size: 20px;
+    --choose-color:#384683;
+}
+.item_stut{
+    margin-bottom: 1px;
+}
+.item_stut label{
+    display: inline-block;
+    margin: 0 calc(var(--checkbox-size) * 0.25);
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    border-radius: .25rem;
+    border: calc(var(--checkbox-size) * 0.1) solid var(--choose-color);
+    -webkit-transition: 400ms 100ms ease-out;
+    -o-transition: 400ms 100ms ease-out;
+    transition: 400ms 100ms ease-out; 
+}
+#teach1{
+    margin-left:15px;
+}
+.span{
+    margin-left: 20px;
+    top: -3px;
+    position: relative
+}
+.item_stut label:hover{
+    opacity: 0.8;
+}
+input[type="radio"] {
+    position: absolute;
+    left: -1000px;
+}
+.item_stut input[type="radio"]:checked + label::before{
+    content: '';
+    position: absolute;
+    margin-left: 2px;
+    margin-top: 2px;
+    z-index: 100;
+    width: calc(var(--checkbox-size)*0.6);
+    height: calc(var(--checkbox-size)*0.6);
+    border-radius:.2rem;
+    background-color: var(--choose-color);
+}
+.block__download{
+    min-width: 300px;
+    min-height: 270px;
+}

@@ -94,7 +94,13 @@ app.post('/marks/m', (req, res) => {
    group = req.body.group; 
    dis = req.body.dis;
     connection.query("select users.id, concat(users.surname,' ', users.name,' ', users.lastname) as fio, marks2.mark, marks2.balls from users left join (SELECT * from marks where marks.dis_id="+dis+") marks2 on users.id=marks2.user_id where users.group_id="+group+" order by users.surname", function(err, rows, fields) {
-      res.send(rows)
+      var m = rows;
+      connection.query("SELECT t1.user_id, t1.mark, t2.id FROM current_marks as t1, col as t2 where t1.col_id =t2.id and t1.dis_id="+dis+"", function(err, rows, fields) {
+        var c = rows;
+        connection.query("SELECT id, date, comment FROM col where dis_id="+dis+"", function(err, rows, fields) {
+          res.send({"c":c, "m":m, "cols":rows})
+        })
+      })
     })
 });
 
@@ -108,15 +114,18 @@ app.post('/marks/sem', (req, res) => {
 app.post('/marks/update', (req, res) => { 
   dis   = req.body.dis; 
   marks = JSON.parse(req.body.marks);
+  cols = JSON.parse(req.body.cols);
 
   var values = []
   for (var i=0; i<marks.length; i++) {
-    var j = []
-    j.push(marks[i].user)
-    j.push(dis)
-    j.push(marks[i].mark)
-    j.push(marks[i].balls)
-    values.push(j)
+    if (marks[i].mark!=undefined) {
+      var j = []
+      j.push(marks[i].user)
+      j.push(dis)
+      j.push(marks[i].mark)
+      j.push(marks[i].balls)
+      values.push(j)
+    }
   }
 
   var users = []
@@ -125,11 +134,43 @@ app.post('/marks/update', (req, res) => {
     users.push(marks[i].user)
   }
 
-  connection.query("DELETE from marks where dis_id ="+dis+" and user_id IN (?)", [users], function(err, rows, fields) {
-    connection.query("INSERT into marks (user_id, dis_id, mark, balls) VALUES ?", [values], function(err, rows, fields) {
-      res.send("Успешно!")
+  var columns = []
+  for (var i=0; i<cols.length; i++) {
+    var j = []
+    j.push(dis)
+    j.push(cols[i].date)
+    j.push(cols[i].comment)
+    columns.push(j)
+  }
+
+  connection.query("DELETE from col where dis_id ="+dis+"", function(err, rows, fields) {
+    connection.query("INSERT into col (dis_id, date, comment) VALUES ?", [columns], function(err, rows, fields) {
+      id_0 = (rows!=undefined) ? rows.insertId : 0;
+      var current_marks = []
+      for (var i=0; i<marks.length; i++) {
+        for (var j=0; j<marks[i].curr_marks.length; j++) {
+          var p = []
+          p.push(marks[i].user)
+          p.push(dis)
+          p.push(marks[i].curr_marks[j].m)
+          p.push(marks[i].curr_marks[j].col+id_0)
+          current_marks.push(p)
+        }
+      } 
+      connection.query("DELETE from current_marks where dis_id ="+dis+" and user_id IN (?)", [users], function(err, rows, fields) {
+        connection.query("INSERT into current_marks (user_id, dis_id, mark, col_id) VALUES ?", [current_marks], function(err, rows, fields) {
+            connection.query("DELETE from marks where dis_id ="+dis+" and user_id IN (?)", [users], function(err, rows, fields) {
+              connection.query("INSERT into marks (user_id, dis_id, mark, balls) VALUES ?", [values], function(err, rows, fields) {
+                res.send("Успешно!")
+              })
+            }) 
+        })
+      })
+      
+    })
   })
-  })
+
+  
   
 });
 

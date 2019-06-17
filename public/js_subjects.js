@@ -46,15 +46,15 @@ $.ajax({
 var createTable = function(semnumb) {
 	result = subjects.filter(e=> e.sem==semnumb);
 	var str= "<table class='table'>";
-	str+="<thead><tr><th scope='col'>Дисциплина</th><th scope='col'>Лекций/нед</th><th scope='col'>Практик/нед</th><th scope='col'>Лаб/нед</th><th scope='col'>Тип контроля</th></tr></thead>"
+	str+="<thead><tr><th scope='col'>Дисциплина</th><th scope='col'>Лекций/нед</th><th scope='col'>Практик/нед</th><th scope='col'>Лаб/нед</th><th scope='col'>Тип контроля</th><th scope='col'>Оценка</th><th scope='col'>Баллы</th></tr></thead>"
 	str+="<tbody>"
 	for(var i = 0; i<result.length; i++) {
 		mark = (result[i].mark==null) ? "" : result[i].mark
 		balls = (result[i].balls==null) ? "" : result[i].balls
 		if (result[i].choise==1)
-		str+="<tr scope='row'><td class='curs'>"+result[i].dis+"</td><td>"+result[i].lek+"</td><td>"+result[i].pr+"</td><td>"+result[i].lab+"</td><td>"+result[i].control+"</td></tr>"
+		str+="<tr scope='row'><td class='curs'>"+result[i].dis+"</td><td>"+result[i].lek+"</td><td>"+result[i].pr+"</td><td>"+result[i].lab+"</td><td>"+result[i].control+"</td><td>"+mark+"</td><td>"+balls+"</td></tr>"
 		else
-		str+="<tr scope='row'><td>"+result[i].dis+"</td><td>"+result[i].lek+"</td><td>"+result[i].pr+"</td><td>"+result[i].lab+"</td><td>"+result[i].control+"</td></tr>"
+		str+="<tr scope='row'><td>"+result[i].dis+"</td><td>"+result[i].lek+"</td><td>"+result[i].pr+"</td><td>"+result[i].lab+"</td><td>"+result[i].control+"</td><td>"+mark+"</td><td>"+balls+"</td></tr>"
 	}
 	str+="</tbody></table>"
 	$("#table").html(str);	

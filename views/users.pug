@@ -1,4 +1,4 @@
-extends layout.pug
+extends layout_admin.pug
 block scripts
     link(rel="shortcut icon" href="images/favicon.ico" type="image/x-icon")
     style
@@ -7,58 +7,48 @@ block scripts
     script
         include ../public/scripts/users.js
         include ../public/scripts/jquery-3.2.1.min.js
+    
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+    script(src="http://malsup.github.com/jquery.form.js")
 
 block content
-    div(class="nav")
-        div(class="nav__left")
-          a(href="/profile" class="btn nav-home" ) Главная
-          a(href="/users" class="btn nav-users")  Пользователи
-          a(href="/directions" class="btn nav-dirs") Направления
-          a(href="/groups" class="btn nav-groups")  Группы
-          a(href="/up" class="btn nav-up") Учебный план
-          a(href="/marks/admin" class="btn")  Оценки    
-          a(href="/schedule" class="btn nav-shedule")  Расписание
-        div(class="nav__right")
-          div(class="nav__right-user") Пользователь: #{username}
-          a(href="/login" )
-            button(type="button" class="btn btn-light btn-image nav__right-exit" id="exit")  Выход
-
     div(class="block__line")
             button(class="btn btn-light btn-image block__line-download") Загрузить группу
             button(class="btn btn-light btn-image block__line-add") Добавить
             button(class="btn btn-light btn-image block__line-update") Изменить
             button(class="btn btn-light btn-image block__line-del") Удалить
 
+ 
     table(class="table")
-        thead
-           tr
-                th №
-                th Имя
-                th Фамилия
-                th Отчество
-                th Дата рождения
-                th Username
-                th Password
-                th Статус
-                th Направление
-                th Год поступления
-                th Группа
-        tbody(class="table_body")
-            -resultQuery=data; 
-            -for(var i=0;i<resultQuery.length;i++){
-            tr(class="info")
-                th=i+1
-                th=resultQuery[i].name
-                th=resultQuery[i].surname
-                th=resultQuery[i].lastname
-                th=resultQuery[i].birthday
-                th=resultQuery[i].username
-                th=resultQuery[i].password 
-                th=resultQuery[i].role
-                th=resultQuery[i].direction
-                th=resultQuery[i].year
-                th=resultQuery[i].groupname
-            -}         
+            thead
+                tr
+                    th №
+                    th Имя
+                    th Фамилия
+                    th Отчество
+                    th Дата рождения
+                    th Username
+                    th Password
+                    th Статус
+                    th Направление
+                    th Год поступления
+                    th Группа
+            tbody(class="table_body")
+                -resultQuery=data; 
+                -for(var i=0;i<resultQuery.length;i++){
+                tr(class="info")
+                    th=resultQuery[i].id
+                    th=resultQuery[i].name
+                    th=resultQuery[i].surname
+                    th=resultQuery[i].lastname
+                    th=resultQuery[i].birthday
+                    th=resultQuery[i].username
+                    th=resultQuery[i].password 
+                    th=resultQuery[i].role
+                    th=resultQuery[i].direction
+                    th=resultQuery[i].year
+                    th=resultQuery[i].groupname
+                -}         
 
     div(class="block__input")
       div(class="block__add")
@@ -71,7 +61,27 @@ block content
                 input(type="text" class="form-control" id="field-name" placeholder="Введите имя" )
             div(class="form-group")
                 label Отчество:
-                input(type="text" class="form-control" id="field-fathername" placeholder="Введите отчество")      
+                input(type="text" class="form-control" id="field-fathername" placeholder="Введите отчество")   
+            div(class="form-group")
+                label(for="inputDate") Введите дату рождения:
+                input(type="date" class="form-control" id="field-birthday")
+            div(class="form-group ")
+                label Статус:
+                div(class="item_stut")
+                    input(type="radio"  id="teacher" name="status") 
+                    label(for="teacher") 
+                        span(class="span") Преподаватель
+                div(class="item_stut")
+                    input(type="radio"  id="admin" name="status" ) 
+                    label(for="admin") 
+                        span(class="span") Аминистратор
+                div(class="item_stut")
+                    input(type="radio" id="student" name="status" )   
+                    label(for="student") 
+                        span(class="span") Студент
+                div(class="form-group")
+                label(for="group1") Группа:
+                select(class="form-control" id="group1" disabled)   
             div(class="block__add__form__button")    
                 button(class="btn btn-primary" class="button-add") Добавить
                 button(class="btn btn-primary" class="button__cancel-add") Отмена
@@ -86,14 +96,44 @@ block content
                 input(type="text" class="form-control" id="field__current-name" placeholder="Введите имя" )
             div(class="form-group")
                 label Отчество:
-                input(type="text" class="form-control" id="field__current-fathername" placeholder="Введите отчество")       
+                input(type="text" class="form-control" id="field__current-fathername" placeholder="Введите отчество")    
+            div(class="form-group")
+                label(for="inputDate") Введите дату рождения:
+                input(type="date" class="form-control" id="field__current-birthday")
+            div(class="form-group ")
+                label Статус:
+                div(class="item_stut")
+                    input(type="radio"  id="teacher1" name="status1") 
+                    label(for="teacher1") 
+                        span(class="span") Преподаватель
+                div(class="item_stut")
+                    input(type="radio"  id="admin1" name="status1" ) 
+                    label(for="admin1") 
+                        span(class="span") Аминистратор
+                div(class="item_stut")
+                    input(type="radio" id="student1" name="status1" )   
+                    label(for="student1") 
+                        span(class="span") Студент
+            div(class="form-group")
+                label(for="group2") Группа:
+                select(class="form-control" id="group2" disabled)      
             div(class="block__add__form__button")    
-                button(class="btn btn-primary" class="button__save") Сохранить
-                button(class="btn btn-primary" class="button__cancel-save") Отмена   
+                button(class="btn btn-primary button__save" ) Сохранить
+                button(class="btn btn-primary button__cancel-save" ) Отмена   
 
       div(class="block__download")
-            p Загрузка группы
-               
+        p Загрузка группы 
+        form(id="upload-container" method="POST" action="/load/group" enctype="multipart/form-data" )
+            div(class="col btn-sm")
+                input(type="file" id="file" class="form-control-file" accept="*/xml" name='file')
+                label(for="file" class="btn file-group btn-tertiary js-labelFile")
+                    i( class="material-icons") cloud_upload
+                    span(class="js-fileName") Загрузить файл
+                div 
+                    div(id="namefile")
+            div(class="form-group")
+                label(for="group2") Группа:
+                select(class="form-control" id="group2"  disabled)   
             div(class="block__add__form__button")    
-                button(class="btn btn-primary" class="button__download") Загрузить 
-                button(class="btn btn-primary" class="button__cancel-download") Отмена 
+                button(class="btn btn-primary button__download" type="submit") Загрузить 
+                button(class="btn btn-primary button__cancel-download") Отмена 

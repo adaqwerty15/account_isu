@@ -96,6 +96,50 @@ module.exports = function(app,passport){
             });
         })
 
+        
+        app.post('/addUser',(req,res)=>{
+            connection.query("INSERT INTO `users`(`name`, `surname`, `lastname`, `birthday`, `username`, `password`, `role`, `group_id`) VALUES ('"+req.body.name+"','"+req.body.surname+"','"+req.body.fathername+"','"+req.body.bday+"','"+req.body.login+"','"+req.body.password+"','"+req.body.stut+"','2')",function(err, rows, fields) {
+                if(err) throw err;
+                connection.query("SELECT users.id,users.name,users.surname,users.lastname,DATE_FORMAT( `birthday` , '%d %M %Y' ) AS birthday,users.username,users.password,users.role,subquery1.name AS groupname,subquery1.direction,subquery1.year FROM users LEFT JOIN (SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id) subquery1 ON users.group_id=subquery1.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
+            });
+        })
+        app.post('/deleteUsers',(req,res)=>{
+            var query = '';
+            for(let i = 0; i<req.body.length; i++){
+                if(i != req.body.length-1)
+                    query += req.body[i].id+', ';
+                else
+                    query += req.body[i].id;
+            }
+            connection.query("DELETE FROM `users` WHERE id IN ("+query+")",function(err, rows, fields) {
+                if(err) throw err;
+                connection.query("SELECT users.id,users.name,users.surname,users.lastname,DATE_FORMAT( `birthday` , '%d %M %Y' ) AS birthday,users.username,users.password,users.role,subquery1.name AS groupname,subquery1.direction,subquery1.year FROM users LEFT JOIN (SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id) subquery1 ON users.group_id=subquery1.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
+            });
+        })
+        app.post('/changeUser',(req,res)=>{
+            connection.query("UPDATE `users` SET name='"+req.body.name+
+            "',surname='"+req.body.surname+
+            "',lastname='"+req.body.fathername+
+            "',birthday='"+req.body.bday+
+            "',username='"+req.body.login+
+            "',password='"+req.body.password+
+            "',role='"+req.body.stut+
+            "',group_id='"+req.body.group+
+            "' WHERE id='"+req.body.id+"'",function(err, rows, fields) {
+                if(err) throw err;
+                connection.query("SELECT users.id,users.name,users.surname,users.lastname,DATE_FORMAT( `birthday` , '%d %M %Y' ) AS birthday,users.username,users.password,users.role,subquery1.name AS groupname,subquery1.direction,subquery1.year FROM users LEFT JOIN (SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id) subquery1 ON users.group_id=subquery1.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
+            });
+        });
+
         //Direction page
         app.get('/directions',(req,res)=>{
             connection.query("SELECT `id`,`code`,`direction` FROM `directions`",(err,rows,fields)=>{
@@ -250,6 +294,10 @@ module.exports = function(app,passport){
         app.get('/subjects', (req, res) => {  
           res.render("subjects", {user:req.user.username, username:str});
         }); 
+
+        app.get('/marks/student', (req, res) => {  
+          res.render("marks_student", {user:req.user.username, username:str});
+        });
 
 
         app.get('/up', (req, res) => {  

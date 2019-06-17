@@ -1,3 +1,25 @@
+.dat:hover {
+    cursor:  pointer;
+    text-decoration: underline;
+}
+
+#edit {
+     background-image: url(../images/pencil.png);
+     width:35px; 
+     height:35px;
+     border-radius: 10%;
+     box-shadow: 0 0 5px 1px rgba(0,0,0,.5) !important;
+     background-repeat: no-repeat;
+     background-position: center;
+     background-color: white;
+     display: none;
+}
+
+#edit:hover {
+    display: block !important;
+    cursor: pointer;
+}
+
 .button-ok{
     margin-top: 1%;
     margin: auto 1%;
@@ -16,6 +38,92 @@
     border-color: #384683;
     box-shadow: none !important;
 }
+
+#addColumn {
+    border-radius: 50%;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,.5) !important;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: #384683;
+    color: #fff; 
+}
+
+#addColumn:hover {
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+#createform, #changeform {
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin: 0;
+    padding: 30px;
+    background: #fff;
+    position: absolute;
+    width: 50%;
+    top: 40%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 10000000;
+}
+
+.button__add{
+    margin-top: 2%;
+    background-color: #384683;
+    border-color: #384683;
+}
+.button__add:hover{
+    background-color: white;
+    color: #384683;
+    border-color: #384683;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+.button__add:active{
+    background-color: white !important;
+    color: #384683 !important;
+    border-color: #384683;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+.button__add:focus{
+    border-color: #384683;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+td td  {
+    border: none !important;
+    padding:  0 .75rem 0 0.75rem !important;
+}
+
+
+.marks, .sum {
+    width: 41px;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    padding: .375rem .375rem;
+}
+
+
+.sum {
+    width: 61px;
+}
+
+
+#cancel, #cancelchange, #delete {
+    margin-left: 10px;
+}
+
+label {
+    margin-top: .5rem;
+}
+
 .button-ok:focus{
     box-shadow: none !important;
 }
@@ -40,4 +148,15 @@ select:hover{
 h2{
     margin: auto 1%;
     margin-bottom: 2%;
+}
+
+#submarks {
+    float: left;
+}
+
+#inform {
+    color: #555;
+    padding-top: 7px;
+    font-style:italic;
+    display: none;
 }

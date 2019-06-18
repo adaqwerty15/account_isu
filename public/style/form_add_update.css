@@ -16,6 +16,60 @@
     background-color: white;
 }
 
+.cm {
+    float: left;
+    background: #384683;
+    color: white;
+    margin: 1.5px;
+    padding: 2px 4px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.cm:hover {
+    cursor: pointer;
+}
+
+.sum {
+    width: 61px;
+    height: 32px;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    padding: .375rem .375rem;
+}
+
+#show {
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin: 0;
+    padding: 10px;
+    background: #fff;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 10000000;
+}
+
+#show p {
+    text-align: left;
+    font-size: inherit;
+    font-weight: normal;
+    margin: 2px;
+}
+
+#show form .form-group {
+    margin: 0;
+}
+
+#table {
+    margin-top: 20px;
+}
+
 .curs {
     font-style: italic;
 }

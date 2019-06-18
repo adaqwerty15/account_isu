@@ -2,6 +2,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const mysql  = require('mysql');
 var path = require('path');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
+
 
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -49,7 +51,7 @@ module.exports = function(app, passport){
         var message = "Неправильный Логин или Пароль!";
         //connection.connect(); 
 		
-        connection.query("SELECT username,password,role FROM users where username='"+username+"' AND password='"+password+"'",function(err, rows, fields) {
+        connection.query("SELECT username,password,role FROM users where username='"+username+"' AND password='"+chiper(password)+"'",function(err, rows, fields) {
       		 if (rows && rows[0])
                 user={
       			  username: rows[0].username,
@@ -60,7 +62,7 @@ module.exports = function(app, passport){
             if(!(user.username == username)){
                return done(null,false,req.flash('message', message),req.flash('class', 'wrong'));
             }
-            if(!(user.password == password)){
+            if(!(user.password == chiper(password))){
                 return done(null,false,req.flash('message',message),req.flash('class', 'wrong'));
             }
            return done(null,user);
@@ -69,5 +71,12 @@ module.exports = function(app, passport){
         
 		
     }));
+
+      var chiper = function(password) {
+            const cipher = crypto.createCipher('aes192', 'a password in our project');
+            var encrypted = cipher.update(password, 'utf8', 'hex');
+            encrypted += cipher.final('hex');
+            return encrypted;
+      }
 }
 

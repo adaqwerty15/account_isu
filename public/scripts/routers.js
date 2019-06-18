@@ -159,6 +159,8 @@ module.exports = function(app,passport){
                 res.end();
             });        
         })
+
+
         
        app.post('/changeDirection',(req,res)=>{   
             var code = req.body.code;
@@ -211,7 +213,15 @@ module.exports = function(app,passport){
             });
         })
 
-
+         app.post('/groups',(req,res)=>{ 
+            connection.query("SELECT groups.id,groups.year,groups.name FROM groups",(err,rows,fields)=>{ 
+                if(err){ 
+                    return err; 
+                } 
+            res.send(rows); 
+            res.end(); 
+            });
+        })
 
         app.post('/addGroup',(req,res)=>{ 
             var id = req.body.id;

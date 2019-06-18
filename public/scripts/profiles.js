@@ -201,13 +201,13 @@ app.get('/subjects/sem', (req, res) => {
               var dir = rows[0].dir_id;
               connection.query("SELECT t1.sem FROM dis as t1, groups as t2 where t1.year =t2.year and t1.dir_id = t2.dir_id and t2.id='"+id+"' group by sem order by sem", function(err, rows, fields) {
                   res.send({"sem":rows, "year":year, "id":user_id, "dir":dir})
+
               }) 
             })
           }); 
   }
   else
   {
-
     res.send("login")
   }
 
@@ -222,6 +222,24 @@ app.post('/subjects/sub', (req, res) => {
 
   connection.query("select dis.dis, dis.choise, dis.sem, dis.lek, dis.pr, dis.lab, dis.control, marks2.mark, marks2.balls from dis left join (SELECT * from marks where marks.user_id="+user+") marks2 on dis.id=marks2.dis_id where dis.dir_id="+dir+" and dis.year="+year, function(err, rows, fields) {
       res.send(rows)
+  })
+}); 
+
+app.post('/marks/sub', (req, res) => { 
+  user = req.body.user;
+  dir = req.body.dir;
+  year = req.body.year;
+
+  connection.query("select dis.id, dis.dis, dis.choise, dis.sem, marks2.mark, marks2.balls from dis"+
+                    " left join (SELECT * from marks where marks.user_id="+user+") marks2 on dis.id=marks2.dis_id"+
+                    " where dis.dir_id="+dir+" and dis.year="+year, function(err, rows, fields) {
+      var itog = rows;
+      connection.query("select dis.id, dis.dis, dis.choise, dis.sem, marks3.mark, marks3.date, marks3.comment from dis"+
+                    " left join (SELECT current_marks.mark, col.date, col.comment, current_marks.dis_id from current_marks, col where current_marks.col_id=col.id and current_marks.user_id="+user+") marks3 on dis.id=marks3.dis_id"+
+                    " where dis.dir_id="+dir+" and dis.year="+year+" and marks3.mark is not null", function(err, rows, fields) {
+          res.send({"itog": itog, "curr_marks": rows})
+
+      })
   })
 }); 
 

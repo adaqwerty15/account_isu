@@ -3,14 +3,19 @@ block scripts
   style
       include ../public/style/form_add_update.css
   script
-    include ../public/scripts/js_subjects.js
+    include ../public/scripts/js_marks_student.js
   script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
   
 block content
     
     div(class="container")                 
-      h4(class="o") Предметы и оценки 
+      h4(class="o") Оценки 
       div(class="clear")
       p(class="m") Выберите семестр
       select(name='dis' id='sem_change' class="form-control")
       div(id="table")
+    div(id="show")
+      form
+        div(class="form-group")
+          p(id="date") Дата
+          p(id="text") Вид работы 

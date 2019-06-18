@@ -83,16 +83,15 @@ $(function() {
                     for(let i = 0; i < result.length;i++ ){
                         str += '<tr class="info">' +
                         '<th id="info-id">'+ result[i].id + '</th>'+
-                        '<th id="info-code">'+ result[i].name +'</th>'+
                         '<th id="info-dir">'+ result[i].surname +'</th>'+
+                        '<th id="info-code">'+ result[i].name +'</th>'+
                         '</th><th id="info-code">'+ result[i].lastname +'</th>'+
                         '</th><th id="info-code">'+ result[i].birthday +'</th>'+
-                        '</th><th id="info-code">'+ result[i].username +'</th>'+
-                        '</th><th id="info-code">'+ result[i].password +'</th>'+
+                        '</th><th id="info-code" class="'+result[i].password+'">'+ result[i].username +'</th>'+
                         '</th><th id="info-code">'+ result[i].role +'</th>'+
-                        '</th><th id="info-code">'+ result[i].direction +'</th>'+
-                        '</th><th id="info-code">'+ result[i].year +'</th>'+
                         '</th><th id="info-code">'+ result[i].groupname +'</th>'+
+                        '</th><th id="info-code">'+ result[i].year +'</th>'+
+                        '</th><th id="info-code">'+ result[i].direction +'</th>'+                       
                         '</tr>';
                     }
                     $('.table_body').append(str);
@@ -139,16 +138,15 @@ $(function() {
                             for(let i = 0; i < result.length;i++ ){
                                 str += '<tr class="info">' +
                                 '<th id="info-id">'+ result[i].id + '</th>'+
-                                '<th id="info-code">'+ result[i].name +'</th>'+
                                 '<th id="info-dir">'+ result[i].surname +'</th>'+
+                                '<th id="info-code">'+ result[i].name +'</th>'+
                                 '</th><th id="info-code">'+ result[i].lastname +'</th>'+
                                 '</th><th id="info-code">'+ result[i].birthday +'</th>'+
-                                '</th><th id="info-code">'+ result[i].username +'</th>'+
-                                '</th><th id="info-code">'+ result[i].password +'</th>'+
+                                '</th><th id="info-code" class="'+result[i].password+'">'+ result[i].username +'</th>'+
                                 '</th><th id="info-code">'+ result[i].role +'</th>'+
-                                '</th><th id="info-code">'+ result[i].direction +'</th>'+
-                                '</th><th id="info-code">'+ result[i].year +'</th>'+
                                 '</th><th id="info-code">'+ result[i].groupname +'</th>'+
+                                '</th><th id="info-code">'+ result[i].year +'</th>'+
+                                '</th><th id="info-code">'+ result[i].direction +'</th>'+ 
                                 '</tr>';
                             }
                             $('.table_body').append(str);
@@ -267,16 +265,15 @@ $(function() {
                         for(let i = 0; i < result.length;i++ ){
                             str += '<tr class="info">' +
                             '<th id="info-id">'+ result[i].id + '</th>'+
-                            '<th id="info-code">'+ result[i].name +'</th>'+
                             '<th id="info-dir">'+ result[i].surname +'</th>'+
+                            '<th id="info-code">'+ result[i].name +'</th>'+
                             '</th><th id="info-code">'+ result[i].lastname +'</th>'+
                             '</th><th id="info-code">'+ result[i].birthday +'</th>'+
-                            '</th><th id="info-code">'+ result[i].username +'</th>'+
-                            '</th><th id="info-code">'+ result[i].password +'</th>'+
+                            '</th><th id="info-code" class="'+result[i].password+'">'+ result[i].username +'</th>'+
                             '</th><th id="info-code">'+ result[i].role +'</th>'+
-                            '</th><th id="info-code">'+ result[i].direction +'</th>'+
-                            '</th><th id="info-code">'+ result[i].year +'</th>'+
                             '</th><th id="info-code">'+ result[i].groupname +'</th>'+
+                            '</th><th id="info-code">'+ result[i].year +'</th>'+
+                            '</th><th id="info-code">'+ result[i].direction +'</th>'+ 
                             '</tr>';
                         }
                         $('.table_body').append(str);
@@ -395,6 +392,13 @@ $('.block__line-download').click(function(){
         return false;
         
     });
+
+    $('.block__line-print').click(function(){
+        var data = $('.clicked');
+        console.log(data)
+    });
+
+
 
 });
 

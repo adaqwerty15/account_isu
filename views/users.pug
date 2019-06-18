@@ -13,6 +13,7 @@ block scripts
 
 block content
     div(class="block__line")
+            button(class="btn btn-light btn-image block__line-print") Распечатать пароли
             button(class="btn btn-light btn-image block__line-download") Загрузить группу
             button(class="btn btn-light btn-image block__line-add") Добавить
             button(class="btn btn-light btn-image block__line-update") Изменить
@@ -23,31 +24,29 @@ block content
             thead
                 tr
                     th №
-                    th Имя
                     th Фамилия
+                    th Имя
                     th Отчество
                     th Дата рождения
                     th Username
-                    th Password
                     th Статус
-                    th Направление
-                    th Год поступления
                     th Группа
+                    th Год поступления
+                    th Направление
             tbody(class="table_body")
                 -resultQuery=data; 
                 -for(var i=0;i<resultQuery.length;i++){
                 tr(class="info")
                     th=resultQuery[i].id
-                    th=resultQuery[i].name
                     th=resultQuery[i].surname
+                    th=resultQuery[i].name
                     th=resultQuery[i].lastname
                     th=resultQuery[i].birthday
-                    th=resultQuery[i].username
-                    th=resultQuery[i].password 
+                    th(class=resultQuery[i].password)=resultQuery[i].username 
                     th=resultQuery[i].role
-                    th=resultQuery[i].direction
-                    th=resultQuery[i].year
                     th=resultQuery[i].groupname
+                    th=resultQuery[i].year
+                    th=resultQuery[i].direction
                 -}         
 
     div(class="block__input")

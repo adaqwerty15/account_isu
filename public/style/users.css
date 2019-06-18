@@ -16,7 +16,10 @@ tbody th{
 .block__line-download:before{
     background-image : url(../images/dowmload.png);
 }
-.block__line-add, .block__line-download, .block__line-del{
+.block__line-print:before{
+     background-image : url(../images/printer.png);
+}
+.block__line-add, .block__line-download, .block__line-del, .block__line-print{
     margin-right: 1%;
 }
 .info{

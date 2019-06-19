@@ -120,6 +120,12 @@ td td  {
 #cancel, #cancelchange, #delete {
     margin-left: 10px;
 }
+#delete{
+    float: right;
+}
+.balls, .mark{
+    width: 60px;
+}
 
 label {
     margin-top: .5rem;

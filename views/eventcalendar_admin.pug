@@ -1,0 +1,44 @@
+extends layout_admin.pug
+
+block scripts
+    link(rel="shortcut icon" href="images/favicon.ico" type="image/x-icon")
+
+    style
+        include ../public/style/eventcalendar.css
+        include ../public/style/form_add_update.css
+        include ../public/style/mini-event-calendar.min.css
+    script
+        include ../public/scripts/eventcalendar_admin.js
+        
+    script
+        include ../public/scripts/mini-event-calendar.js
+
+
+block content 
+    div(class="container")
+        div(id="cr") 
+        div(id="calendar")
+
+
+
+    div(class="block__create__event")
+        div(class="tm") Мероприятие
+        div(class="create__event__data")
+            div(class="block_line")
+                label(for="date") Дата проведения:
+                input(type="date" id="date" class="form-control" disabled )
+            div(class="block_line")
+                label(for="time") Время:
+                input(type="time" id="time" class="form-control"  )
+            div(class="block_line")
+                label(for="title") Мероприятие:
+                input(type="text" id="title" class="form-control ")
+            div(class="block_line")
+                label(for="desc") Описание:
+                textarea(name="des", cols="30", rows="2" type="text" id="desc" class="form-control ")
+            div(class="block_line")
+                label(for="linl") Ресурсы:
+                input(type="text" id="link" class="form-control ")
+        div(class="create__event__button")
+           button(class="btn btn-primary create__event-save") Сохранить
+           button(class="btn btn-primary create__event-cancel") Отмена

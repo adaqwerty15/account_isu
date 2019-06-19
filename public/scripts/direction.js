@@ -21,6 +21,7 @@ $( document ).ready(function() {
                 var str = '';
                 if(result)
                 $('.table_body').html("");
+            console.log(result)
                     for(let i = 0; i < result.length;i++ ){
                         str += '<tr class="info"><th id="info-id">'+ result[i].id +'</th><th id="info-code">'+ result[i].code +'</th><th id="info-dir">'+ result[i].direction +'</th></tr>';
                     }

@@ -1,4 +1,4 @@
-.block__add, .block__update, .block__download{
+.block__add, .block__update, .block__download, .block__create__event{
     width: 50%;
     padding-top: 2%;
     padding-bottom: 2%;
@@ -10,7 +10,7 @@
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
     position: absolute;
     z-index: 2;
-    top: 25%;
+    top: 10%;
     left: 25%;
     display: none;
     background-color: white;
@@ -113,5 +113,26 @@ select:focus, input:focus{
     box-shadow: 0 0 0 3px #abb8f1 !important;
 }
 select:hover, input:hover{
+    box-shadow: none !important;
+}
+
+.block__create__event button{
+    width: 30% ;
+    background-color: #384683;
+    border-color: #384683;
+}
+.block__create__event  button:hover{
+    background-color: white;
+    color: #384683;
+    border-color: #384683;
+    box-shadow: none !important;
+}
+.block__create__event button:active{
+    background-color: white !important;
+    color: #384683 !important;
+    border-color: #384683;
+    box-shadow: none !important;
+}
+.block__create__event button:focus{
     box-shadow: none !important;
 }

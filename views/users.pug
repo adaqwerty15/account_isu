@@ -18,7 +18,10 @@ block content
             button(class="btn btn-light btn-image block__line-add") Добавить
             button(class="btn btn-light btn-image block__line-update") Изменить
             button(class="btn btn-light btn-image block__line-del") Удалить
-
+            button(class="btn btn-light btn-image block__line-up" id="pass") Сбросить пароль
+    div(class="block__line__left")
+            button(class="btn btn-light btn-image block__line-check") Выделить все
+            button(class="btn btn-light btn-image block__line-clear") Снять выделение      
  
     table(class="table")
             thead
@@ -29,8 +32,8 @@ block content
                     th Отчество
                     th Дата рождения
                     th Username
-                    th Статус
-                    th Группа
+                    th(class="filter r") Статус
+                    th(class="filter g") Группа
                     th Год поступления
                     th Направление
             tbody(class="table_body")
@@ -43,7 +46,7 @@ block content
                     th=resultQuery[i].lastname
                     th=resultQuery[i].birthday
                     th(class=resultQuery[i].password)=resultQuery[i].username 
-                    th=resultQuery[i].role
+                    th(class="role")=resultQuery[i].role
                     th=resultQuery[i].groupname
                     th=resultQuery[i].year
                     th=resultQuery[i].direction
@@ -131,8 +134,9 @@ block content
                 div 
                     div(id="namefile")
             div(class="form-group")
-                label(for="group2") Группа:
-                select(class="form-control" id="group2"  disabled)   
+                label(for="group3") Группа:
+                select(class="form-control" id="group3"  )     
             div(class="block__add__form__button")    
-                button(class="btn btn-primary button__download" type="submit") Загрузить 
-                button(class="btn btn-primary button__cancel-download") Отмена 
+                button(class="btn btn-primary button__download" type="submit" value="dw") Загрузить 
+                button(class="btn btn-primary button__cancel-download" value="can") Отмена 
+      div(id="block__filter")            

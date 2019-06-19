@@ -1,4 +1,9 @@
 const mysql  = require('mysql');
+const fs = require("fs");
+const crypto = require('crypto');
+var path = require('path');
+
+
 
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -178,6 +183,7 @@ app.get('/schedule', (req, res) => {
   res.render("schedule", {user:req.user.username});
 }); 
 
+
 app.get('/schedule/teacher', (req, res) => {  
   res.render("schedule_teacher", {user:req.user.username});
 });
@@ -214,6 +220,41 @@ app.get('/subjects/sem', (req, res) => {
   
 });
 
+app.get('/print', (req, res) => {  
+  res.sendFile(path.join(__dirname, '../', 'printpassword.html'));
+});
+
+app.post('/users/print', (req, res) => { 
+  str = JSON.parse(req.body.str);
+  f = req.body.f;
+  console.log(f)
+  var s
+  if (f=='false') s = ""
+    else s = "<th>Группа</th>"
+  
+  ht = "<html> "+
+      "<head> "+
+        "<title>Печать паролей</title> "+
+      "</head> "+
+      "<style>td, th {padding: 6px; border: 1px solid black;} table {border: 1px solid black; border-collapse: collapse; }</style>"+
+      "<body> "+
+        "<table> "+
+          " <thead><tr><th>Фамилия</th><th>Имя</th><th>Отчество</th><th>Логин</th><th>Пароль</th>"+s+"</tr></thead>"+
+            "<tbody>"
+  for (var i=0; i<str.length; i++) {
+    const decipher = crypto.createDecipher('aes192', 'a password in our project');
+    var decrypted = decipher.update(str[i].password, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    if (f=='false')
+      ht+="<tr><td>"+str[i].surname+"</td><td>"+str[i].name+"</td><td>"+str[i].lastname+"</td><td>"+str[i].username+"</td><td>"+decrypted+"</td></tr>"
+    else  
+    ht+="<tr><td>"+str[i].surname+"</td><td>"+str[i].name+"</td><td>"+str[i].lastname+"</td><td>"+str[i].username+"</td><td>"+decrypted+"</td><td>"+str[i].group+"</td></tr>"
+  }
+  ht+="</tbody></table></body></html>"
+  fs.writeFile("./public/printpassword.html", ht, function() {
+    res.send("ok")
+  })  
+}); 
 
 app.post('/subjects/sub', (req, res) => { 
   user = req.body.user;

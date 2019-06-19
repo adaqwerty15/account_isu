@@ -32,5 +32,4 @@ app.use(flash());
 require('./public/scripts/routers.js')(app,passport);
 require('./public/scripts/chat_file.js')(io,app);
 require('./public/scripts/profiles.js')(app);
-
-
+require('./public/scripts/fileGroup.js')(app);

@@ -1,4 +1,7 @@
 const mysql  = require('mysql');
+var generatePassword = require('password-generator');
+var cyrillictotranslit = require('cyrillic-to-translit-js');
+const crypto = require('crypto');
 
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -96,14 +99,31 @@ module.exports = function(app,passport){
             });
         })
 
+        app.post('/users',(req,res)=>{
+            connection.query("SELECT users.id,users.name,users.surname,users.lastname,DATE_FORMAT( `birthday` , '%d %M %Y' ) AS birthday,users.username,users.password,users.role,subquery1.name AS groupname,subquery1.direction,subquery1.year FROM users LEFT JOIN (SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id) subquery1 ON users.group_id=subquery1.id",function(err, rows, fields) {
+                if(err) throw err;
+                res.send({data:rows});
+            });
+        })
+
         
         app.post('/addUser',(req,res)=>{
-            connection.query("INSERT INTO `users`(`name`, `surname`, `lastname`, `birthday`, `username`, `password`, `role`, `group_id`) VALUES ('"+req.body.name+"','"+req.body.surname+"','"+req.body.fathername+"','"+req.body.bday+"','"+req.body.login+"','"+req.body.password+"','"+req.body.stut+"','2')",function(err, rows, fields) {
+            var randomLength = Math.floor(Math.random() * (12 - 9)) + 9;
+            var password = generatePassword(randomLength, false, /[\w\d\?\-]/)
+            var name = cyrillictotranslit().transform(req.body.surname+""+req.body.name[0]+""+req.body.fathername[0])
+            connection.query("SELECT users.id from users where username='"+name+"'",(err,rows,fields)=>{
+                    if(rows.length!=0) name = name+""+rows.length;
+            const cipher = crypto.createCipher('aes192', 'a password in our project');
+            var encrypted = cipher.update(password, 'utf8', 'hex');
+            encrypted += cipher.final('hex');
+
+            connection.query("INSERT INTO `users`(`name`, `surname`, `lastname`, `birthday`, `username`, `password`, `role`, `group_id`) VALUES ('"+req.body.name+"','"+req.body.surname+"','"+req.body.fathername+"','"+req.body.bday+"','"+name+"','"+encrypted+"','"+req.body.stut+"','"+req.body.group+"')",function(err, rows, fields) {
                 if(err) throw err;
                 connection.query("SELECT users.id,users.name,users.surname,users.lastname,DATE_FORMAT( `birthday` , '%d %M %Y' ) AS birthday,users.username,users.password,users.role,subquery1.name AS groupname,subquery1.direction,subquery1.year FROM users LEFT JOIN (SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id) subquery1 ON users.group_id=subquery1.id",(err,rows,fields)=>{
                     res.send(rows);
                     res.end();
                 });
+            });
             });
         })
         app.post('/deleteUsers',(req,res)=>{
@@ -122,13 +142,30 @@ module.exports = function(app,passport){
                 });
             });
         })
+
+        app.post('/updatePasswords',(req,res)=>{
+
+            var randomLength = Math.floor(Math.random() * (12 - 9)) + 9;
+            var password = generatePassword(randomLength, false, /[\w\d\?\-]/)
+            const cipher = crypto.createCipher('aes192', 'a password in our project');
+            var encrypted = cipher.update(password, 'utf8', 'hex');
+            encrypted += cipher.final('hex');
+            
+            console.log(req.body.id)
+            connection.query("UPDATE `users` set password = '"+encrypted+"' WHERE id='"+req.body.id+"'",function(err, rows, fields) {
+                if(err) throw err;
+                connection.query("SELECT users.id,users.name,users.surname,users.lastname,DATE_FORMAT( `birthday` , '%d %M %Y' ) AS birthday,users.username,users.password,users.role,subquery1.name AS groupname,subquery1.direction,subquery1.year FROM users LEFT JOIN (SELECT groups.id,groups.year,groups.name,directions.direction FROM groups,directions WHERE groups.dir_id=directions.id) subquery1 ON users.group_id=subquery1.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
+            });
+        })
+
         app.post('/changeUser',(req,res)=>{
             connection.query("UPDATE `users` SET name='"+req.body.name+
             "',surname='"+req.body.surname+
             "',lastname='"+req.body.fathername+
             "',birthday='"+req.body.bday+
-            "',username='"+req.body.login+
-            "',password='"+req.body.password+
             "',role='"+req.body.stut+
             "',group_id='"+req.body.group+
             "' WHERE id='"+req.body.id+"'",function(err, rows, fields) {
@@ -153,10 +190,11 @@ module.exports = function(app,passport){
             connection.query("INSERT INTO directions (`code`, `direction`) VALUES ('"+code+"','"+name+"')",(err,rows,fields)=>{
                 if(err){
                     return err;
-    
                 }
-                res.send(true);
-                res.end();
+                connection.query("SELECT id,code,direction FROM directions",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
             });        
         })
 
@@ -329,5 +367,16 @@ module.exports = function(app,passport){
           }); 
           
         });
+ 	
+	app.get('/eventcalendar',(req,res)=>{
+            res.render('eventcalendar_admin',{user:req.user.username, username: str});
+        })
+
+        app.get('/events',(req,res)=>{
+            connection.query("SELECT calendar.id,calendar.title,calendar.description,calendar.time,calendar.link,date.date_value FROM calendar, date WHERE calendar.id_date=date.id",(err,rows,fields)=>{
+                res.send(rows);
+                res.end();
+            });
+        })
 
 }

@@ -2,8 +2,76 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-bottom: 2%;
 }
+
+.button__add{
+    margin-top: 2%;
+    background-color: #384683;
+    border-color: #384683;
+}
+
+#cancel {
+    margin-left: 2%;
+}
+
+.button__add:hover{
+    background-color: white;
+    color: #384683;
+    border-color: #384683;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+.button__add:active{
+    background-color: white !important;
+    color: #384683 !important;
+    border-color: #384683;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+.button__add:focus{
+    border-color: #384683;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+.block__line__left{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 0.5%;
+}
+
+.filter:hover {
+    cursor: pointer;
+    background: rgba(171, 184, 241, 0.5);
+}
+
+.c {
+    text-align: left;
+    font-size: 1rem;
+    font-weight: normal;
+    padding: 2px;
+    margin: 2px;
+    text-indent: 5px;
+    display: block;
+}
+
+.c input {
+    margin-right: 5px;
+}
+
+#block__filter {
+    /*border-radius: 15px;*/
+    /*box-shadow: 0 0 10px rgba(0,0,0,0.5);*/
+    margin: 0;
+    padding: 10px;
+    background: #fff;
+    position: absolute;
+    /*display: none;*/
+    z-index: 10000000;
+}
+
+
 tbody th{
     font-weight: normal;
 }
@@ -13,14 +81,29 @@ tbody th{
 .block__line-del:before{
     background-image : url(../images/del.png);
 }
+
+.block__line-up:before{
+    background-image : url(../images/del.png);
+}
+
 .block__line-download:before{
     background-image : url(../images/dowmload.png);
 }
 .block__line-print:before{
      background-image : url(../images/printer.png);
 }
-.block__line-add, .block__line-download, .block__line-del, .block__line-print{
+.block__line-clear:before{
+     background-image : url(../images/del.png);
+}
+.block__line-check:before{
+     background-image : url(../images/checked.png);
+}
+.block__line-add, .block__line-download, .block__line-del, .block__line-print, .block__line-up{
     margin-right: 1%;
+}
+
+.block__line-clear, .block__line-check{
+    margin-left: 1%;
 }
 .info{
       background-color: #fff;

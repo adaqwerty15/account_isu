@@ -12,7 +12,7 @@ $(document).ready(function(){
    		
 	});
 
-$("#sup").submit(function() {
+$("#fup").submit(function() {
 	
 	$(this).ajaxSubmit({
 

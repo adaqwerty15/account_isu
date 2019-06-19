@@ -1,0 +1,113 @@
+body { 
+    background-color: #fafafa;  
+    
+}
+
+[id^=calendar],
+[id^=calendar] + h3{
+	
+}
+
+[id^=calendar] + h3{
+			text-align: center;
+}
+svg{
+    vertical-align: 0% !important;
+}
+#main__block{
+    background:#384683;
+    width: 45vw;
+    /* margin-right: 5%; */
+}
+.container{
+    /* margin-left: calc(80vw * 0.1);
+    margin-right: calc(80vw * 0.1); */
+    padding: 0%;
+    max-width: 90vw;
+}
+#t {
+    display: flex;
+    align-items: baseline;
+}
+#t h3{
+    font-size: 1.1em !important;
+    color: #fdfa37 !important;
+}
+#t h3:first-child{
+    padding-right: 0.4em;
+}
+:root{
+    --color-h5:rgb(239, 243, 247);
+}
+#m h5{
+    font-size: 0.9em !important;
+    color: var(--color-h5);
+}
+#m h5 a{
+    font-size: 0.8em !important;
+    text-decoration: none;
+    color: var(--color-h5);
+}
+#m h5 a:hover{
+    opacity: 0.8;
+    text-decoration: underline;
+}
+.hover{
+    
+}
+@keyframes rise {
+    0% { opacity: 0.1;}
+    10% { opacity: 0.5;}
+   50% { opacity: 1 }
+   
+ }
+ .rise {
+    opacity:0;
+    animation: rise ease-out 5s;
+    animation-fill-mode: forwards ;  
+} 
+
+@keyframes fade {
+    0% { opacity: 1;}
+    10% { opacity:0.2;}
+   50% { opacity: 0 }
+   
+}
+.fade {
+    opacity:0;
+    animation: rise ease-out 3s;
+    animation-fill-mode: forwards ;  
+} 
+
+
+#cr{
+    height: 20px;
+    position: absolute;
+    z-index: 100;
+}
+#cr:hover{
+    cursor: pointer; 
+}
+.nav__event{
+    display: flex;
+    justify-content: flex-end;
+}
+.nav__event i:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+.create__event{
+    position: absolute;
+}
+.create__event__data{
+    margin-bottom: 2%;
+}
+.tm{
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 1%;
+}
+.create__event__button{
+    display: flex;
+    justify-content: space-evenly;
+}

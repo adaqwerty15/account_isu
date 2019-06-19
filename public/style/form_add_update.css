@@ -16,6 +16,7 @@
     background-color: white;
 }
 
+
 .cm {
     float: left;
     background: #384683;
@@ -28,6 +29,7 @@
 
 .cm:hover {
     cursor: pointer;
+    background: rgba(56, 70, 131, 0.7);
 }
 
 .sum {

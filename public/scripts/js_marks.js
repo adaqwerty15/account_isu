@@ -71,10 +71,11 @@ $("#sem_change").change(function() {
 		},
 		success: function(rows){
 			if (rows[0]) {
+				console.log(rows)
 				str = "<option disabled selected>Выберите дисциплину</option>"
 				for (var i=0; i<rows.length; i++) {
 					str+="<option value="+rows[i].id+">"+rows[i].dis+"</option>"
-					dis.push({"id":rows[i].id, "control":rows[i].control})
+					dis.push({"id":rows[i].id, "control":rows[i].control, "choise":rows[i].choise})
 				}
 				$("#dis_change").html(str);
 
@@ -150,8 +151,10 @@ $("#submarks").click(function() {
 var users;
 
 $("#dis_change").change(function() {
+	let z = [];
 	var y =  $("#group_change option:selected").val();
 	var d =  $("#dis_change option:selected").val();
+	var s =  $("#sem_change option:selected").val();
 	result = dis.filter(e => e.id==d)
 	$("#table").html("<p>Форма контроля: "+result[0].control+"</p>")
 	$.ajax({
@@ -167,8 +170,70 @@ $("#dis_change").change(function() {
 			users = rows.m
 			cols = rows.cols
 			c = rows.c
+
+			let users_id = []
+
+			for (let i=0; i<users.length; i++)
+				users_id.push(users[i].id)
 			
-			if (marks[0]) {
+			if (result[0].choise==1) {
+				$.ajax({
+					type: "POST",
+					url: "/curses/q",
+					data: {
+						dis: d,
+						sem: s
+					},
+					success: function(msg){
+						for (let i=0; i<msg.length; i++)
+							z.push(msg[i].user_id)
+
+						let p = z.filter(value => users_id.includes(value))
+
+						if (p.length==0) {
+							$("#table").html("<p>Нет записанных на курс</p>");
+						}
+
+						else {
+							if (marks[0]) {
+								str+= "<table class='table' id='tmarks'>";
+								str+="<thead><tr><th>ФИО студента</th><th>Текущие баллы</th><th></th><th rowspan='2'>Суммарный балл</th><th rowspan='2'>Итоговая оценка</th><th rowspan='2'>Баллы</th></tr></thead>"
+								str+="<tbody>"
+								str+="<tr><td></td><td><button type='button' id='addColumn' title='Добавить колонку'>+</button></td></tr>"
+								for(var i = 0; i<marks.length; i++) {
+									if (p.includes(marks[i].id)) {
+									mark = (marks[i].mark==null) ? "" : marks[i].mark
+									balls = (marks[i].balls==null) ? "" : marks[i].balls
+									str+="<tr><td id='"+marks[i].id+"'>"+marks[i].fio+"</td><td></td><td></td><td><input  class='form-control sum'  type='text' ' value='0' disabled/></td><td><input  class='form-control mark'  type='text' ' value='"+mark+"'/></td><td><input class='form-control balls' type='text'  value='"+balls+"'/></td></tr>"
+									}
+								}
+								str+="</tbody></table>"
+								$("#table").html(str);
+								$("#submarks").show();	
+
+								for (var i=0; i<cols.length; i++) {
+									addColumns(cols[i], i)
+								}
+
+								for (var i=0; i<c.length; i++) {
+									$("input#m"+c[i].id+'_'+c[i].user_id).val(c[i].mark);
+								}
+
+								$(".sum").each(function(){
+					           		sumRow($(this))           
+					         	});
+
+								addEnterItog("input.mark")
+								addEnterItog("input.balls")
+
+					 		}
+						}
+					}
+					});
+			}
+
+			else {
+				if (marks[0]) {
 				str+= "<table class='table' id='tmarks'>";
 				str+="<thead><tr><th>ФИО студента</th><th>Текущие баллы</th><th></th><th rowspan='2'>Суммарный балл</th><th rowspan='2'>Итоговая оценка</th><th rowspan='2'>Баллы</th></tr></thead>"
 				str+="<tbody>"
@@ -180,24 +245,26 @@ $("#dis_change").change(function() {
 				}
 				str+="</tbody></table>"
 				$("#table").html(str);
-			$("#submarks").show();	
+				$("#submarks").show();	
 
-			for (var i=0; i<cols.length; i++) {
-				addColumns(cols[i], i)
+				for (var i=0; i<cols.length; i++) {
+					addColumns(cols[i], i)
+				}
+
+				for (var i=0; i<c.length; i++) {
+					$("input#m"+c[i].id+'_'+c[i].user_id).val(c[i].mark);
+				}
+
+				$(".sum").each(function(){
+	           		sumRow($(this))           
+	         	});
+
+				addEnterItog("input.mark")
+				addEnterItog("input.balls")
+
+	 			}
 			}
-
-			for (var i=0; i<c.length; i++) {
-				$("input#m"+c[i].id+'_'+c[i].user_id).val(c[i].mark);
-			}
-
-			$(".sum").each(function(){
-           		sumRow($(this))           
-         	});
-
-			addEnterItog("input.mark")
-			addEnterItog("input.balls")
-
-	 		}
+		
 	 	}
 	});
 

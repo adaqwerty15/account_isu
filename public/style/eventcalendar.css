@@ -1,6 +1,5 @@
 body { 
-    background-color: #fafafa;  
-    
+    background-color: #fafafa;    
 }
 
 [id^=calendar],
@@ -8,6 +7,11 @@ body {
 	
 }
 
+[id^=card]{
+    padding: 2%;
+    border:solid 2px #5b6aac;
+    border-radius: 10px;
+}
 [id^=calendar] + h3{
 			text-align: center;
 }
@@ -25,16 +29,20 @@ svg{
     padding: 0%;
     max-width: 90vw;
 }
-#t {
+#navTitle {
     display: flex;
     align-items: baseline;
 }
-#t h3{
+#navTitle h3{
     font-size: 1.1em !important;
     color: #fdfa37 !important;
 }
-#t h3:first-child{
+#navTitle h3:first-child{
     padding-right: 0.4em;
+}
+#t{
+    display: flex;
+    align-items: unset;
 }
 :root{
     --color-h5:rgb(239, 243, 247);
@@ -52,9 +60,7 @@ svg{
     opacity: 0.8;
     text-decoration: underline;
 }
-.hover{
-    
-}
+
 @keyframes rise {
     0% { opacity: 0.1;}
     10% { opacity: 0.5;}
@@ -98,6 +104,7 @@ svg{
 }
 .create__event{
     position: absolute;
+    margin-bottom: 4%;
 }
 .create__event__data{
     margin-bottom: 2%;
@@ -111,3 +118,14 @@ svg{
     display: flex;
     justify-content: space-evenly;
 }
+#eventTime{
+    min-width: fit-content;
+}
+.delete_event:hover{
+    opacity: 0.7;
+    cursor: pointer;
+}
+.card_event{
+    margin-top: 2%;
+}
+

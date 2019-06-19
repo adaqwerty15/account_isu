@@ -18,7 +18,7 @@ $(function() {
     })
 
     $('#file').on("change",(e)=>{
-	       var fileName = '';
+           var fileName = '';
         //fileName = e.target.files[0].name;
         //$('#namefile').html(fileName);
         if (e.target.value){
@@ -747,4 +747,3 @@ $('.block__line-download').click(function(){
 
 
 });
-

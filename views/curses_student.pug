@@ -1,0 +1,17 @@
+extends layout_student.pug
+block scripts
+  style
+      include ../public/style/form_add_update.css
+      include ../public/style/curs.css
+  script
+    include ../public/scripts/js_curses.js
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
+  
+block content
+    
+    div(class="container")                 
+      h4(class="o") Курсы по выбору 
+      div(class="clear")
+      p(class="m") Выберите семестр
+      select(name='dis' id='sem_change' class="form-control")
+      div(id="table")

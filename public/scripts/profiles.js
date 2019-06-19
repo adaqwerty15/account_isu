@@ -90,7 +90,7 @@ module.exports = function(app){
 app.post('/marks/dis', (req, res) => { 
    group = req.body.group; 
    sem = req.body.sem;
-  connection.query("SELECT t1.id, t1.dis, t1.control FROM dis as t1, groups as t2 where t1.year =t2.year and t1.dir_id = t2.dir_id and t2.name='"+group+"' and t1.sem="+sem, function(err, rows, fields) {
+  connection.query("SELECT t1.id, t1.dis, t1.control, t1.choise FROM dis as t1, groups as t2 where t1.year =t2.year and t1.dir_id = t2.dir_id and t2.name='"+group+"' and t1.sem="+sem, function(err, rows, fields) {
       res.send(rows)
   })
 });
@@ -107,6 +107,22 @@ app.post('/marks/m', (req, res) => {
         })
       })
     })
+});
+
+app.post('/curses/m', (req, res) => { 
+   group = req.body.group; 
+   connection.query("select dir_id, year from groups where id="+group, function(err, rows, fields) {
+    var d = rows[0]
+    connection.query("select users.id, concat(users.surname,' ', users.name,' ', users.lastname) as fio from users where users.group_id="+group+" order by users.surname", function(err, rows, fields) {
+      var m = rows;
+      connection.query("SELECT curses.sem, curses.user_id, curses.dis_id, sub.dis FROM curses left join (SELECT * from dis) sub on curses.dis_id=sub.id ", function(err, rows, fields) {
+        var c = rows;
+        connection.query("SELECT id, dis, choise, sem FROM dis where year='"+d.year+"' and dir_id='"+d.dir_id+"' ", function(err, rows, fields) {
+          res.send({"c":c, "m":m, "d":rows})
+        })
+      })
+    })
+  })
 });
 
 app.post('/marks/sem', (req, res) => { 
@@ -225,7 +241,7 @@ app.get('/print', (req, res) => {
 });
 
 app.post('/users/print', (req, res) => { 
-  str = JSON.parse(req.body.str);
+  var str2 = JSON.parse(req.body.str);
   f = req.body.f;
   console.log(f)
   var s
@@ -241,14 +257,14 @@ app.post('/users/print', (req, res) => {
         "<table> "+
           " <thead><tr><th>Фамилия</th><th>Имя</th><th>Отчество</th><th>Логин</th><th>Пароль</th>"+s+"</tr></thead>"+
             "<tbody>"
-  for (var i=0; i<str.length; i++) {
+  for (var i=0; i<str2.length; i++) {
     const decipher = crypto.createDecipher('aes192', 'a password in our project');
-    var decrypted = decipher.update(str[i].password, 'hex', 'utf8');
+    var decrypted = decipher.update(str2[i].password, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     if (f=='false')
-      ht+="<tr><td>"+str[i].surname+"</td><td>"+str[i].name+"</td><td>"+str[i].lastname+"</td><td>"+str[i].username+"</td><td>"+decrypted+"</td></tr>"
+      ht+="<tr><td>"+str2[i].surname+"</td><td>"+str2[i].name+"</td><td>"+str2[i].lastname+"</td><td>"+str2[i].username+"</td><td>"+decrypted+"</td></tr>"
     else  
-    ht+="<tr><td>"+str[i].surname+"</td><td>"+str[i].name+"</td><td>"+str[i].lastname+"</td><td>"+str[i].username+"</td><td>"+decrypted+"</td><td>"+str[i].group+"</td></tr>"
+    ht+="<tr><td>"+str2[i].surname+"</td><td>"+str2[i].name+"</td><td>"+str2[i].lastname+"</td><td>"+str2[i].username+"</td><td>"+decrypted+"</td><td>"+str2[i].group+"</td></tr>"
   }
   ht+="</tbody></table></body></html>"
   fs.writeFile("./public/printpassword.html", ht, function() {
@@ -261,9 +277,84 @@ app.post('/subjects/sub', (req, res) => {
   dir = req.body.dir;
   year = req.body.year;
 
-  connection.query("select dis.dis, dis.choise, dis.sem, dis.lek, dis.pr, dis.lab, dis.control, marks2.mark, marks2.balls from dis left join (SELECT * from marks where marks.user_id="+user+") marks2 on dis.id=marks2.dis_id where dis.dir_id="+dir+" and dis.year="+year, function(err, rows, fields) {
+  connection.query("select dis.dis, dis.choise, dis.sem, dis.lek, dis.pr, dis.lab, dis.control from dis where dis.dir_id="+dir+" and dis.year="+year, function(err, rows, fields) {
       res.send(rows)
   })
+}); 
+
+app.post('/curses/sub', (req, res) => { 
+  user = req.body.user;
+  dir = req.body.dir;
+  year = req.body.year;
+
+  connection.query("select dis.id, dis.dis, dis.choise, dis.sem, dis.control from dis where dis.dir_id="+dir+" and dis.choise='1' and dis.year="+year, function(err, rows, fields) {
+      let r = rows
+      connection.query("select dis_id, sem from curses where user_id="+user, function(err, rows, fields) {
+        res.send({"dis":r, "ch":rows})
+      })
+  })
+}); 
+
+app.post('/curses/user', (req, res) => {
+  user = req.body.user;
+  connection.query("select dis_id, sem from curses where user_id="+user, function(err, rows, fields) {
+        res.send(rows)
+  })
+})
+
+app.post('/curses/q', (req, res) => {
+  let d = req.body.dis;
+  let s = req.body.sem
+  connection.query("select user_id from curses where dis_id="+d+" and sem="+s, function(err, rows, fields) {
+        res.send(rows)
+  })
+})
+
+app.post('/block', (req, res) => {
+  let g = req.body.group;
+  let s = req.body.sem
+  connection.query("delete from block where group_id='"+g+"' and sem='"+s+"'", function(err, rows, fields) {
+    connection.query("insert into block (group_id, sem) values ('"+g+"', '"+s+"')", function(err, rows, fields) {
+          res.send(rows)
+    })
+  })  
+})
+
+app.post('/blc', (req, res) => {
+  let user = req.body.user;
+  let s = req.body.sem
+  connection.query("select group_id from users where id='"+user+"'", function(err, rows, fields) {
+    let g = rows[0].group_id;
+    connection.query("select id from block where group_id='"+g+"' and sem='"+s+"'", function(err, rows, fields) {
+          res.send(rows)
+    })
+  })  
+})
+
+app.post('/deblock', (req, res) => {
+  let g = req.body.group;
+  let s = req.body.sem
+  connection.query("delete from block where group_id='"+g+"' and sem='"+s+"'", function(err, rows, fields) {
+          res.send(rows)
+  })  
+})
+
+app.post('/curses/load', (req, res) => { 
+  user = req.body.user;
+  sem = req.body.sem;
+  data = JSON.parse(req.body.data);
+
+
+  connection.query("delete from curses where user_id='"+user+"' and sem="+sem, function(err, rows, fields) {
+      for (let i=0; i<data.length; i++) {
+          connection.query("insert into curses (user_id, sem, dis_id) values ("+user+", "+sem+", "+data[i]+")", function(err, rows, fields) {
+            
+          })
+      }
+      res.send("Ok")
+  })
+
+  
 }); 
 
 app.post('/marks/sub', (req, res) => { 

@@ -1,0 +1,19 @@
+extends layout_teacher.pug
+
+block scripts
+    link(rel="shortcut icon" href="images/favicon.ico" type="image/x-icon")
+
+    style
+        include ../public/style/eventcalendar_teacher.css
+        include ../public/style/mini-event-calendar.min.css
+    script
+        include ../public/scripts/eventcalendar_teacher.js
+        
+    //-script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
+    script
+        include ../public/scripts/mini-event-calendar-show.js
+
+
+block content 
+    div(class="container")
+        div(id="calendar")

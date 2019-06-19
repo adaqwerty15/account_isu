@@ -320,6 +320,12 @@ module.exports = function(app,passport){
           })
         });
 
+        app.get('/curses/admin', (req, res) => {  
+          connection.query("SELECT * FROM groups order by year desc", function(err, rows, fields) {
+              res.render('curs_admin', {groups: rows, user:req.user.username, username:str})
+          })
+        })
+
         
         app.get('/marks/teacher', (req, res) => {  
           connection.query("SELECT * FROM groups order by year desc", function(err, rows, fields) {
@@ -341,6 +347,10 @@ module.exports = function(app,passport){
 
         app.get('/subjects', (req, res) => {  
           res.render("subjects", {user:req.user.username, username:str});
+        }); 
+
+        app.get('/curses/student', (req, res) => {  
+          res.render("curses_student", {user:req.user.username, username:str});
         }); 
 
         app.get('/marks/student', (req, res) => {  
@@ -378,5 +388,54 @@ module.exports = function(app,passport){
                 res.end();
             });
         })
+
+        app.get('/eventcalendar/student',(req,res)=>{
+            res.render('eventcalendar_student',{user:req.user.username, username: str});
+        })
+
+        app.get('/eventcalendar/teacher',(req,res)=>{
+            res.render('eventcalendar_teacher',{user:req.user.username, username: str});
+        })
+
+        app.post('/event/create',(req,res)=>{
+            let date = req.body.date;
+            let time = req.body.time;
+            let title = req.body.title;
+            let desc = req.body.desc;
+            let link = req.body.link;
+
+            connection.query("SELECT id FROM date WHERE date_value = '"+date+"'",(err,rows,fields)=>{
+               
+                if(rows.length>0){
+                    connection.query("INSERT INTO `calendar`( `description`, `title`, `time`, `link`, `id_date`) VALUES ('"+desc+"','"+title+"','"+time+"','"+link+"','"+rows[0].id+"')",(err,rows,fields)=>{
+                        connection.query("SELECT calendar.id,calendar.title,calendar.description,calendar.time,calendar.link,date.date_value FROM calendar, date WHERE calendar.id_date=date.id",(err,rows,fields)=>{
+                            res.send(rows);
+                            res.end();
+                        });
+                    });
+                }else{
+                    connection.query("INSERT INTO `date`(`date_value`) VALUES ('"+date+"')",(err,rows,fields)=>{
+                        connection.query("SELECT id FROM date WHERE date_value = '"+date+"'",(err,rows,fields)=>{
+                            connection.query("INSERT INTO `calendar`( `description`, `title`, `time`, `link`, `id_date`) VALUES ('"+desc+"','"+title+"','"+time+"','"+link+"','"+rows[0].id+"')",(err,rows,fields)=>{
+                                connection.query("SELECT calendar.id,calendar.title,calendar.description,calendar.time,calendar.link,date.date_value FROM calendar, date WHERE calendar.id_date=date.id",(err,rows,fields)=>{
+                                    res.send(rows);
+                                    res.end();
+                                });
+                            });
+                        });
+                    });
+                }
+            }); 
+        });
+
+        app.post('/event/delete',(req,res)=>{
+            let idblock = req.body.idblock;
+            connection.query("DELETE FROM calendar WHERE id = '"+idblock+"'",(err,rows,fields)=>{
+                connection.query("SELECT calendar.id,calendar.title,calendar.description,calendar.time,calendar.link,date.date_value FROM calendar, date WHERE calendar.id_date=date.id",(err,rows,fields)=>{
+                    res.send(rows);
+                    res.end();
+                });
+            });
+        });
 
 }

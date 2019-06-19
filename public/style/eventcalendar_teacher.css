@@ -1,0 +1,79 @@
+body { 
+    background-color: #fafafa;    
+}
+
+[id^=calendar],
+[id^=calendar] + h3{
+	
+}
+
+[id^=calendar] + h3{
+			text-align: center;
+}
+svg{
+    vertical-align: 0% !important;
+}
+#main__block{
+    background:#384683;
+    width: 45vw;
+    /* margin-right: 5%; */
+}
+.container{
+    /* margin-left: calc(80vw * 0.1);
+    margin-right: calc(80vw * 0.1); */
+    padding: 0%;
+    max-width: 90vw;
+}
+#t {
+    display: flex;
+    align-items: baseline;
+}
+#t h3{
+    font-size: 1.1em !important;
+    color: #fdfa37 !important;
+}
+#t h3:first-child{
+    padding-right: 0.4em;
+}
+:root{
+    --color-h5:rgb(239, 243, 247);
+}
+#m h5{
+    font-size: 0.9em !important;
+    color: var(--color-h5);
+}
+#m h5 a{
+    font-size: 0.8em !important;
+    text-decoration: none;
+    color: var(--color-h5);
+}
+#m h5 a:hover{
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+[id^=card]{
+    padding: 2%;
+    border:solid 2px #5b6aac;
+    border-radius: 10px;
+}
+#eventTime{
+    min-width: fit-content;
+}
+#navTitle {
+    display: flex;
+    align-items: baseline;
+}
+#navTitle h3{
+    font-size: 1.1em !important;
+    color: #fdfa37 !important;
+}
+#navTitle h3:first-child{
+    padding-right: 0.4em;
+}
+.card_event{
+    margin-bottom: 2%;
+}
+.added{
+    margin-bottom: 2%;
+}

@@ -20,25 +20,19 @@
 			</div>
 		</div>
 		<div id="calTFooter">
-			<div class="nav__event">
-				<i class='material-icons create_event'> create</i>
-			</div>
 			<div class="card_event">
 				<div id="t">
-						<div id="navTitle">
-							<h3 id="eventTime"></h3>
-							<h3 id="eventTitle">No events today.</h3>
-						</div>
-						<div class="d">
-							<i class='material-icons delete_event' onclick="clickHandler(event)"  > delete</i>
-						</div>
-						
+					<div id="navTitle">
+						<h3 id="eventTime"></h3>
+						<h3 id="eventTitle">No events today.</h3>
+					</div>		
 				</div>
 				<div id="m">
 					<h5 id="eventDecs"></h5>
 					<h5><a href="" id="eventLink"/></h5>
 				</div>
 			</div>
+			
 			<!--<a href="javascript:void(0);" id="calLink">ALL EVENTS</a>-->
 		</div>
 		
@@ -55,7 +49,7 @@
 			onMonthChanged: null
 		}, options );
 		var miniCalendar = this;
-			console.log(settings)
+
         miniCalendar.addClass('mini-cal').html(calenderTpl);
 
 		var thead = miniCalendar.find("#calThead");
@@ -95,10 +89,7 @@
 			});
 		});
 
-		let d = ("0" + today.getDate()).slice(-2);
-		let y = curYear;
-		let m = ("0" + (curMonth + 1)).slice(-2);
-
+		
 		miniCalendar.on("click touchstart", ".a-date", function(e){
 			e.preventDefault(); 
 			$(".a-date").removeClass('focused');
@@ -109,55 +100,8 @@
 				$(this).addClass('focused');
 			}
 		});
-
-		$('.create_event').on("click",()=>{
-			let date = $('#date').val(y + "-" + m + "-" + d);
-			$('#time').val("");
-        	$('#title').val("");
-          	$('#desc').val("");
-          	$('#link').val("");
-			// console.log("open block create");
-			$('.block__create__event').css({"display":"block"});
-			$('.container').css({"opacity":"0.8"});
-		 });
-		let fd = '';
-
-		miniCalendar.on("mouseover",".a-date",  (e)=>{
-			var str = "<i class='material-icons  create'> create</i>";
-			// console.log($(e.currentTarget)[0].childNodes[0].innerText);
-			fd = ("0" + $(e.currentTarget)[0].childNodes[0].innerText).slice(-2);
-			$('#cr').css({'top':(5+$(e.currentTarget)[0].offsetTop)+'px ','left':(5+$(e.currentTarget)[0].offsetLeft)+'px'});
-			$('#cr').html(str);
-		    if(!$(this).hasClass('blurred')){
-				$(e.currentTarget).addClass('hover');
-				$('#cr i').addClass('rise');
-				$('#cr i').removeClass('fade');
-			}
-			
-		});
-		miniCalendar.on("mouseout", ".a-date", (e)=>{
-			
-			$(e.currentTarget).removeClass('hover');
-			$('.hover i').removeClass('fade');
-			$('#cr i').removeClass('rise');
-			$('#cr i').addClass('fade');
-			
-		});
-
-		$('#cr').on("click",  function(e){
-			// console.log("click")
-			let date = $('#date').val(y + "-" + m + "-" + fd);
-			$('#time').val("");
-			$('#title').val("");
-			$('#desc').val("");
-			$('#link').val("");
-			$('.block__create__event').css({"display":"block"});
-			$('.container').css({"opacity":"0.8"});
-		});	
 		
 		function populateCalendar(month, year, onInit) {
-			y = year;
-			m = ("0" + (month + 1)).slice(-2);
 			tbody.html("");
 			calTitle.text(shortMonths[month] + " " + year);
 			eventTitle.text("Click day to see event");
@@ -166,13 +110,12 @@
 			eventDecs.text('');
 			eventTime.text('');
 			eventLink.text('');
-			$('.card_event').attr('id','idnull');
 			$('.added').remove();
-			$('.delete_event').attr('id',"idnull");
-			$('.delete_event').css('display',"none");
+			$('.card_event').attr('id','idnull');
 
 			curMonth = month;
 			curYear = year;
+
 			var ldate = new Date(year, month);
 			var dt = new Date(ldate);
 			var weekDay = dt.getDay();
@@ -185,12 +128,11 @@
 
 			while (ldate.getMonth() === month) {
      			dt = new Date(ldate);
-     			var isToday = areSameDate(ldate, new Date());
-				var event = null;
-				var eventIndex = [];
-				
 
-				let count = 0;
+     			var isToday = areSameDate(ldate, new Date());
+				 var event = null;
+				 var eventIndex = [];
+     			let count = 0;
 				while(count < settings.events.length){
 					if(areSameDate(dt, new Date(settings.events[count].date)) == true) eventIndex.push(count);
 					count++;
@@ -243,20 +185,16 @@
      				var yearIdx = curYear - 1;
      			}
      		}
-			 
-			 //Предыдущий месц - полседние дни, для заполнения календаря
+     		
      		var prevMonth = getMonthDays(monthIdx, yearIdx);
      		var lastDays = "";
-			for (var i = day; i > 0; i--)
-			 	// console.log(prevMonth[prevMonth.length - i])
+        	for (var i = day; i > 0; i--)
      			lastDays += dateTpl(true, prevMonth[prevMonth.length - i]);
 
         	return lastDays;
  		}
 
 		function dateTpl(blurred, date, isToday, event, isSelected){
-			// console.log(event)
-			// console.log(date)
 			var tpl = "<div class='a-date blurred'><span>"+date+"</span></div>";
 
 			if(!blurred){
@@ -276,7 +214,7 @@
 			$('.added').remove();
 			
 			if(event && event !== null && event !== undefined){
-				
+				console.log(event.length)
 				if(event.length === 1){
 					console.log("one")
 					eventTitle.text(event[0].title);
@@ -289,9 +227,7 @@
 					if(event[0].link.length>0) p = "Подробнее: "+event[0].link;
 					eventLink.text(p);
 					eventLink.prop("href",event[0].link);
-					$('.delete_event').css('display',"block");
 					$('.card_event').attr('id','card'+event[0].id);
-					$('.delete_event').attr('id',"id"+event[0].id);
 
 				}else{
 					console.log("more");
@@ -308,25 +244,20 @@
 							if(event[0].link.length>0) p = "Подробнее: "+event[0].link;
 							eventLink.text(p);
 							eventLink.prop("href",event[0].link);
-							
-							$('.delete_event').css('display',"block");
 							$('.card_event').attr('id','card'+event[0].id);
-							$('.delete_event').attr('id','id0');
 						}
 						else{
+							console.log("+")
 							let t = '';
-							if(event[i].time.length>0)  t = (formatTime(event[i].time)) + " -  ";  
-						let p = '';
-							if(event[i].link.length>0) p = "Подробнее: "+event[i].link;
+								if(event[i].time.length>0)  t = (formatTime(event[i].time)) + " -  ";  
+							let p = '';
+								if(event[i].link.length>0) p = "Подробнее: "+event[i].link;
 						
 							str = str + '<div class="card_event added" id="card'+event[i].id+'">'+
 											'<div id="t">'+
 												'<div id="navTitle">'+
 													'<h3 id="eventTime">'+t+'</h3>'+
 													'<h3 id="eventTitle">'+event[i].title+'</h3>'+
-												'</div>'+
-												'<div>'+
-													'<i class="material-icons delete_event" onclick="clickHandler(event)" id="id'+event[i].id+'"> delete</i>'+
 												'</div>'+
 											'</div>'+
 											'<div id="m">'+
@@ -335,6 +266,7 @@
 											'</div>'+
 										'</div>';
 					}}
+					console.log(str)
 					$('.card_event').after(str);
 				}
 				
@@ -346,13 +278,9 @@
 				eventsLink.text("ALL EVENTS");
 				eventsLink.attr("href", settings.calendar_link);
 				$('.card_event').attr('id','idnull');
-				$('.delete_event').attr('id','idnull');
-				$('.delete_event').css('display',"none");
 			}
 
 		}
-
-		
 
 		function formatTime(time){
 			let t_ = time.substring(0,5);

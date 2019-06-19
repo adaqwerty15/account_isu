@@ -167,3 +167,19 @@ input[type="radio"] {
     min-width: 300px;
     min-height: 270px;
 }
+
+.r div{
+    min-width: 66px;
+}
+.r div:after{
+    content:  url(../images/dw.png);
+    /* background-image : url(../images/down-arrow.png); */
+    background-repeat: no-repeat;
+
+}
+.g div:after{
+    content:  url(../images/dw.png);
+    /* background-image : url(../images/down-arrow.png); */
+    background-repeat: no-repeat;
+    padding-left: 2px;
+}
